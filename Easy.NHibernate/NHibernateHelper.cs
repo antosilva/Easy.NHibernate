@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NHibernate;
 using NHibernate.Cfg;
@@ -28,11 +29,13 @@ namespace Easy.NHibernate
 
         public void AddMappingsFromAssemblies(IEnumerable<Assembly> assemblies)
         {
+            AddMappings(assemblies.SelectMany(x => x.GetExportedTypes()));
+        }
+
+        public void AddMappings(IEnumerable<Type> types)
+        {
             ModelMapper mapper = new ModelMapper();
-            foreach (Assembly assembly in assemblies)
-            {
-                mapper.AddMappings(assembly.GetExportedTypes());
-            }
+            mapper.AddMappings(types.ToList());
 
             HbmMapping mappings = mapper.CompileMappingForAllExplicitlyAddedEntities();
             _configuration.AddMapping(mappings);
