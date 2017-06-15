@@ -30,7 +30,8 @@ namespace Easy.NHibernate
         public void AddMappingsFromAssemblies(IEnumerable<Assembly> assemblies)
         {
             // Select only ClassMapping<> types.
-            IEnumerable<Type> mappingTypes = assemblies.SelectMany(x => x.GetExportedTypes().Where(t => typeof(IConformistHoldersProvider).IsAssignableFrom(t)));
+            Type baseMappingType = typeof(IConformistHoldersProvider);
+            IEnumerable<Type> mappingTypes = assemblies.SelectMany(a => a.GetExportedTypes().Where(t => baseMappingType.IsAssignableFrom(t)));
             AddMappings(mappingTypes);
         }
 
