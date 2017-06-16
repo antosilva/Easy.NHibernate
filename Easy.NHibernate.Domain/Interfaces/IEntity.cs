@@ -1,4 +1,4 @@
-﻿namespace Easy.NHibernate.Repository.Interfaces
+﻿namespace Easy.NHibernate.Domain.Interfaces
 {
     public interface IEntity
     {

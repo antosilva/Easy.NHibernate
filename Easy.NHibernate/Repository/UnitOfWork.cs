@@ -1,11 +1,12 @@
-﻿using Easy.NHibernate.Repository.Interfaces;
+﻿using System;
+using Easy.NHibernate.Repository.Interfaces;
 using NHibernate;
 
 namespace Easy.NHibernate.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ITransaction _transaction;
+        private ITransaction _transaction;
 
         public UnitOfWork(ISession session)
         {
@@ -27,5 +28,31 @@ namespace Easy.NHibernate.Repository
                 _transaction.Rollback();
             }
         }
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            Rollback();
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _transaction?.Dispose();
+                _transaction = null;
+            }
+        }
+
+        ~UnitOfWork()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }

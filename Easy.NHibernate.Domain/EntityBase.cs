@@ -1,6 +1,6 @@
-﻿using Easy.NHibernate.Repository.Interfaces;
+﻿using Easy.NHibernate.Domain.Interfaces;
 
-namespace Easy.NHibernate.Repository
+namespace Easy.NHibernate.Domain
 {
     public class EntityBase<T> : IEntity where T : EntityBase<T>
     {

@@ -1,15 +1,23 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Easy.NHibernate.Repository.Interfaces
 {
-    public interface IRepository<T> where T : class, IEntity
+    public interface IRepository<T> where T : class
     {
-        void Save(T entity);
+        void Add(T entity);
+        void Add(IEnumerable<T> entity);
+
         void Update(T entity);
-        T GetById(long id);
-        IQueryable<T> FindAll(Expression<Func<T, bool>> selector);
-        IQueryable<T> FindAll(Expression<Func<T, bool>> selector, int recordsPerPage, int pageNumber);
+        void Update(IEnumerable<T> entity);
+
+        void Delete(T entity);
+        void Delete(IEnumerable<T> entity);
+
+        T Get(int id);
+
+        IEnumerable<T> Query(Expression<Func<T, bool>> criteria);
+        IEnumerable<T> Query(Expression<Func<T, bool>> criteria, int pageNumber, int itemsPerPage);
     }
 }

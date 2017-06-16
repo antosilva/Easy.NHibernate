@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Easy.NHibernate.Repository.Interfaces;
 using NHibernate;
+using NHibernate.Criterion;
 using NHibernate.Linq;
+using NHibernate.Util;
 
 namespace Easy.NHibernate.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class, IEntity
+    public class Repository<T> : IRepository<T> where T : class
     {
         private readonly ISession _session;
 
@@ -16,9 +19,14 @@ namespace Easy.NHibernate.Repository
             _session = session;
         }
 
-        public void Save(T entity)
+        public void Add(T entity)
         {
             _session.SaveOrUpdate(entity);
+        }
+
+        public void Add(IEnumerable<T> entities)
+        {
+            entities.ForEach(Add);
         }
 
         public void Update(T entity)
@@ -26,23 +34,40 @@ namespace Easy.NHibernate.Repository
             _session.Merge(entity);
         }
 
-        public T GetById(long id)
+        public void Update(IEnumerable<T> entities)
         {
-            return _session.Load<T>(id);
+            entities.ForEach(Update);
         }
 
-        public IQueryable<T> FindAll(Expression<Func<T, bool>> selector)
+        public void Delete(T entity)
         {
-            return _session.Query<T>()
-                           .Where(selector);
+            _session.Delete(entity);
         }
 
-        public IQueryable<T> FindAll(Expression<Func<T, bool>> selector, int recordsPerPage, int pageNumber)
+        public void Delete(IEnumerable<T> entities)
+        {
+            entities.ForEach(Delete);
+        }
+
+        public T Get(int id)
+        {
+            return _session.Get<T>(id);
+        }
+
+        public IEnumerable<T> Query(Expression<Func<T, bool>> criteria)
         {
             return _session.Query<T>()
-                           .Where(selector)
-                           .Skip(pageNumber * recordsPerPage)
-                           .Take(recordsPerPage);
+                           .Where(criteria)
+                           .ToList();
+        }
+
+        public IEnumerable<T> Query(Expression<Func<T, bool>> criteria, int pageNumber, int itemsPerPage)
+        {
+            return _session.Query<T>()
+                           .Where(criteria)
+                           .Skip(pageNumber * itemsPerPage)
+                           .Take(itemsPerPage)
+                           .ToList();
         }
     }
 }

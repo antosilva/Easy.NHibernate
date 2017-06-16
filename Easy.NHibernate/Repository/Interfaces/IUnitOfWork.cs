@@ -1,6 +1,8 @@
-﻿namespace Easy.NHibernate.Repository.Interfaces
+﻿using System;
+
+namespace Easy.NHibernate.Repository.Interfaces
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         void Commit();
         void Rollback();
