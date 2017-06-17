@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Easy.NHibernate.Database.Configurations;
 using Easy.NHibernate.Database.Schema;
@@ -9,6 +10,7 @@ using Easy.NHibernate.Persistence.GenericRepository;
 using Easy.NHibernate.Persistence.Mappings;
 using Easy.NHibernate.Persistence.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NHibernate;
 using NHibernate.Cfg;
 
 namespace Easy.NHibernate.UnitTests
@@ -19,6 +21,30 @@ namespace Easy.NHibernate.UnitTests
         [TestMethod]
         public void TestMethod1()
         {
+            //Configuration sqlite = new SqliteConfiguration("Data Source=mydb.db;Version=3;");
+            //IDatabaseSessionFactory sqliteFactory = new DatabaseSessionFactory(sqlite);
+            //sqliteFactory.AddMappingTypes(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
+            //sqliteFactory.CompileMappings();
+            //DatabaseSchema schlite = new DatabaseSchema(sqlite);
+            //schlite.ExportToConsole();
+            //schlite.ExportToDatabase();
+            //using (ISession sqlitesession = sqliteFactory.OpenSession())
+            //{
+            //}
+            //return;
+
+            //Configuration sqlite = new InMemoryConfiguration();
+            //IDatabaseSessionFactory sqliteFactory = new DatabaseSessionFactory(sqlite);
+            //sqliteFactory.AddMappingTypes(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
+            //sqliteFactory.CompileMappings();
+            //DatabaseSchema schlite = new DatabaseSchema(sqlite);
+            //schlite.ExportToConsole();
+            //schlite.ExportToDatabase();
+            //using (ISession sqlitesession = sqliteFactory.OpenSession())
+            //{
+            //}
+            //return;
+
             Configuration msSqlConfiguration = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
 
             IDatabaseSessionFactory sessionFactory = new DatabaseSessionFactory(msSqlConfiguration);
