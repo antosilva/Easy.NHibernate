@@ -2,40 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Easy.NHibernate.Database.Session.Interfaces;
+using Easy.NHibernate.Database.Sessions.Interfaces;
 using NHibernate;
 using NHibernate.Cfg;
-using NHibernate.Cfg.Loquacious;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Mapping.ByCode;
 
-namespace Easy.NHibernate.Database.Session
+namespace Easy.NHibernate.Database.Sessions
 {
-    public class DatabaseSession : IDatabaseSession
+    public class DatabaseSessionFactory : IDatabaseSessionFactory
     {
         protected ISessionFactory _sessionFactory;
         protected readonly Configuration _configuration;
         protected readonly IList<Type> _mappings = new List<Type>();
 
-        public DatabaseSession(string configurationFile)
+        public DatabaseSessionFactory(Configuration configuration)
         {
-            _configuration = new Configuration();
-            _configuration.Configure(configurationFile);
+            _configuration = configuration;
         }
 
-        public DatabaseSession(Action<IDbIntegrationConfigurationProperties> databaseIntegration)
-        {
-            _configuration = new Configuration();
-            _configuration.DataBaseIntegration(databaseIntegration);
-        }
-
-        public DatabaseSession(IDictionary<string, string> databaseProperties)
-        {
-            _configuration = new Configuration();
-            _configuration.SetProperties(databaseProperties);
-        }
-
-        public void AddExportedMappingTypes(IEnumerable<Assembly> exportingAssemblies)
+        public void AddMappingTypes(IEnumerable<Assembly> exportingAssemblies)
         {
             IEnumerable<Type> mappingTypes = exportingAssemblies.SelectMany(a => ExtractMappingTypesFrom(a.GetExportedTypes()));
             foreach (Type mappingType in mappingTypes)

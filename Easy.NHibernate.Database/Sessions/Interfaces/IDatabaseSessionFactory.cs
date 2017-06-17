@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using NHibernate;
 
-namespace Easy.NHibernate.Database.Session.Interfaces
+namespace Easy.NHibernate.Database.Sessions.Interfaces
 {
-    public interface IDatabaseSession
+    public interface IDatabaseSessionFactory
     {
-        void AddExportedMappingTypes(IEnumerable<Assembly> exportingAssemblies);
+        void AddMappingTypes(IEnumerable<Assembly> exportingAssemblies);
         void AddMappingTypes(IEnumerable<Type> mappingTypes);
 
         ISession OpenSession();
