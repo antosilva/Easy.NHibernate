@@ -9,6 +9,7 @@ using Easy.NHibernate.Domain;
 using Easy.NHibernate.Persistence.GenericRepository;
 using Easy.NHibernate.Persistence.Mappings;
 using Easy.NHibernate.Persistence.Repositories;
+using Easy.NHibernate.UnitTests.DataSource;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NHibernate;
 using NHibernate.Cfg;
@@ -33,8 +34,8 @@ namespace Easy.NHibernate.UnitTests
             //}
             //return;
 
-            //Configuration sqlite = new InMemoryConfiguration();
-            //IDatabaseSessionFactory sqliteFactory = new DatabaseSessionFactory(sqlite);
+            InMemoryConfiguration sqlite = new InMemoryConfiguration();
+            IDatabaseSessionFactory sqliteFactory = new DatabaseSessionFactory(sqlite);
             //sqliteFactory.AddMappingTypes(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
             //sqliteFactory.CompileMappings();
             //DatabaseSchema schlite = new DatabaseSchema(sqlite);
@@ -44,6 +45,8 @@ namespace Easy.NHibernate.UnitTests
             //{
             //}
             //return;
+
+            TestingData td = new TestingData();
 
             Configuration msSqlConfiguration = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
 
@@ -64,8 +67,8 @@ namespace Easy.NHibernate.UnitTests
                 IEnumerable<CustomerEntity> all = repo.QueryAllCustomers();
                 IEnumerable<CustomerEntity> customers = repo.QueryCustomersNameStartingWith("R");
 
-                //customer = repo.Get(60);
-                //customers = repo.Get(new List<int> {80, 81, 82});
+                customer = repo.Get(60);
+                customers = repo.Get(new List<int> {80, 81, 82});
 
                 //using (var uow = new UnitOfWork(session))
                 //{

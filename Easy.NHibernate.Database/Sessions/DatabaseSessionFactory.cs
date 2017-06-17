@@ -12,28 +12,36 @@ namespace Easy.NHibernate.Database.Sessions
 {
     public class DatabaseSessionFactory : IDatabaseSessionFactory
     {
-        protected ISessionFactory _sessionFactory;
+        protected readonly Lazy<ISessionFactory> _sessionFactory;
         protected readonly Configuration _configuration;
-        protected readonly IList<Type> _mappings = new List<Type>();
+        protected readonly IList<Type> _mappings;
 
         public DatabaseSessionFactory(Configuration configuration)
         {
             _configuration = configuration;
+            _mappings = new List<Type>();
+            _sessionFactory = new Lazy<ISessionFactory>(() => _configuration.BuildSessionFactory());
+        }
+
+        public void AddMappingTypes(string exportingNamespace)
+        {
+            IEnumerable<Type> types = AppDomain.CurrentDomain
+                                               .GetAssemblies()
+                                               .SelectMany(t => t.GetExportedTypes())
+                                               .Where(t => t.Namespace == exportingNamespace && t.IsClass);
+            AddMappingTypes(types);
         }
 
         public void AddMappingTypes(IEnumerable<Assembly> exportingAssemblies)
         {
-            IEnumerable<Type> mappingTypes = exportingAssemblies.SelectMany(a => ExtractMappingTypesFrom(a.GetExportedTypes()));
-            foreach (Type mappingType in mappingTypes)
-            {
-                _mappings.Add(mappingType);
-            }
+            IEnumerable<Type> exportedTypes = exportingAssemblies.SelectMany(a => a.GetExportedTypes());
+            AddMappingTypes(exportedTypes);
         }
 
         public void AddMappingTypes(IEnumerable<Type> mappingTypes)
         {
             var types = mappingTypes as Type[] ?? mappingTypes.ToArray();
-            var mappingTypesOnly = ExtractMappingTypesFrom(types);
+            var mappingTypesOnly = GetMappingTypesFrom(types);
             foreach (Type mappingType in mappingTypesOnly)
             {
                 _mappings.Add(mappingType);
@@ -50,20 +58,10 @@ namespace Easy.NHibernate.Database.Sessions
 
         public ISession OpenSession()
         {
-            if (_sessionFactory == null)
-            {
-                lock (_mappings)
-                {
-                    if (_sessionFactory == null)
-                    {
-                        _sessionFactory = _configuration.BuildSessionFactory();
-                    }
-                }
-            }
-            return _sessionFactory.OpenSession();
+            return _sessionFactory.Value.OpenSession();
         }
 
-        protected IEnumerable<Type> ExtractMappingTypesFrom(IEnumerable<Type> types)
+        protected IEnumerable<Type> GetMappingTypesFrom(IEnumerable<Type> types)
         {
             IEnumerable<Type> mappingTypesOnly = types.Where(t => typeof(IConformistHoldersProvider).IsAssignableFrom(t));
             return mappingTypesOnly;

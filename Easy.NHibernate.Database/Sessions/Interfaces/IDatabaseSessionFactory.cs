@@ -7,6 +7,7 @@ namespace Easy.NHibernate.Database.Sessions.Interfaces
 {
     public interface IDatabaseSessionFactory
     {
+        void AddMappingTypes(string exportingNamespace);
         void AddMappingTypes(IEnumerable<Assembly> exportingAssemblies);
         void AddMappingTypes(IEnumerable<Type> mappingTypes);
 
