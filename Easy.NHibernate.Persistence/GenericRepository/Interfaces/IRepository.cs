@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Easy.NHibernate.Repository.Interfaces
+namespace Easy.NHibernate.Persistence.GenericRepository.Interfaces
 {
     public interface IRepository<T> where T : class
     {

@@ -1,7 +1,7 @@
 ﻿using NHibernate.Dialect;
 using NHibernate.Driver;
 
-namespace Easy.NHibernate.Database
+namespace Easy.NHibernate.Database.Session
 {
     public class MsSqlSession : DatabaseSession
     {

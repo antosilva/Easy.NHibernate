@@ -7,8 +7,8 @@
     <ProjectGuid>{4620FBE0-AF00-445B-AD74-847C5C00D80B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Easy.NHibernate</RootNamespace>
-    <AssemblyName>Easy.NHibernate</AssemblyName>
+    <RootNamespace>Easy.NHibernate.Database</RootNamespace>
+    <AssemblyName>Easy.NHibernate.Database</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,17 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\Interfaces\IDatabaseSession.cs" />
-    <Compile Include="Database\DatabaseSession.cs" />
-    <Compile Include="Database\MsSqlSession.cs" />
-    <Compile Include="Database\SybaseAseSession.cs" />
+    <Compile Include="Session\Interfaces\IDatabaseSession.cs" />
+    <Compile Include="Session\DatabaseSession.cs" />
+    <Compile Include="Session\MsSqlSession.cs" />
+    <Compile Include="Session\SybaseAseSession.cs" />
     <Compile Include="Drivers\Sybase\SybaseAdoNet45AseDriver.cs" />
     <Compile Include="Drivers\Sybase\SybaseAdoNet4AseDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\Interfaces\IRepository.cs" />
-    <Compile Include="Repository\Interfaces\IUnitOfWork.cs" />
-    <Compile Include="Repository\Repository.cs" />
-    <Compile Include="Repository\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

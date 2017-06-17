@@ -1,15 +1,15 @@
 ﻿using NHibernate.Driver;
 
-namespace Easy.NHibernate.Drivers.Sybase
+namespace Easy.NHibernate.Database.Drivers.Sybase
 {
-    public class SybaseAdoNet4AseDriver : ReflectionBasedDriver
+    public class SybaseAdoNet45AseDriver : ReflectionBasedDriver
     {
         public override string NamedPrefix => "@";
         public override bool UseNamedPrefixInParameter => true;
         public override bool UseNamedPrefixInSql => true;
 
-        public SybaseAdoNet4AseDriver()
-            : base("Sybase.AdoNet4.AseClient",
+        public SybaseAdoNet45AseDriver()
+            : base("Sybase.AdoNet45.AseClient",
                    "Sybase.Data.AseClient.AseConnection",
                    "Sybase.Data.AseClient.AseCommand")
         {

@@ -1,7 +1,7 @@
-﻿using NHibernate.Dialect;
-using Easy.NHibernate.Drivers.Sybase;
+﻿using Easy.NHibernate.Database.Drivers.Sybase;
+using NHibernate.Dialect;
 
-namespace Easy.NHibernate.Database
+namespace Easy.NHibernate.Database.Session
 {
     public class SybaseAseSession : DatabaseSession
     {

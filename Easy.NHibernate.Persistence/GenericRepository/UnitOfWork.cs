@@ -1,8 +1,8 @@
 ﻿using System;
-using Easy.NHibernate.Repository.Interfaces;
+using Easy.NHibernate.Persistence.GenericRepository.Interfaces;
 using NHibernate;
 
-namespace Easy.NHibernate.Repository
+namespace Easy.NHibernate.Persistence.GenericRepository
 {
     public class UnitOfWork : IUnitOfWork
     {

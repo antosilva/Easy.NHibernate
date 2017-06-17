@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Easy.NHibernate.Repository.Interfaces;
+using Easy.NHibernate.Persistence.GenericRepository.Interfaces;
 using NHibernate;
 using NHibernate.Linq;
 
-namespace Easy.NHibernate.Repository
+namespace Easy.NHibernate.Persistence.GenericRepository
 {
     public class Repository<T> : IRepository<T> where T : class
     {

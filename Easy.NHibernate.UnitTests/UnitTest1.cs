@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Easy.NHibernate.Database;
-using Easy.NHibernate.Database.Interfaces;
+using Easy.NHibernate.Database.Session;
+using Easy.NHibernate.Database.Session.Interfaces;
 using Easy.NHibernate.Domain;
+using Easy.NHibernate.Persistence.GenericRepository;
 using Easy.NHibernate.Persistence.Mappings;
 using Easy.NHibernate.Persistence.Repositories;
-using Easy.NHibernate.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Easy.NHibernate.UnitTests

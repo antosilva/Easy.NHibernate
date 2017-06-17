@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NHibernate;
 
-namespace Easy.NHibernate.Database.Interfaces
+namespace Easy.NHibernate.Database.Session.Interfaces
 {
     public interface IDatabaseSession
     {

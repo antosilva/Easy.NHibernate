@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Easy.NHibernate.Database.Interfaces;
+using Easy.NHibernate.Database.Session.Interfaces;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Cfg.Loquacious;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Mapping.ByCode;
 
-namespace Easy.NHibernate.Database
+namespace Easy.NHibernate.Database.Session
 {
     public class DatabaseSession : IDatabaseSession
     {

@@ -43,7 +43,9 @@
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\Easy.NHibernate\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="NHibernate, Version=4.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\Easy.NHibernate\packages\NHibernate.4.1.1.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
@@ -66,9 +68,9 @@
       <Project>{99A73459-F825-4F4C-BA39-9F4F3B00D8E1}</Project>
       <Name>Easy.NHibernate.Persistence</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Easy.NHibernate\Easy.NHibernate.csproj">
+    <ProjectReference Include="..\Easy.NHibernate.Database\Easy.NHibernate.Database.csproj">
       <Project>{4620FBE0-AF00-445B-AD74-847C5C00D80B}</Project>
-      <Name>Easy.NHibernate</Name>
+      <Name>Easy.NHibernate.Database</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

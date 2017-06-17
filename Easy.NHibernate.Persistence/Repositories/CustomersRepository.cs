@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Easy.NHibernate.Domain;
-using Easy.NHibernate.Repository;
+using Easy.NHibernate.Persistence.GenericRepository;
 using NHibernate;
 
 namespace Easy.NHibernate.Persistence.Repositories

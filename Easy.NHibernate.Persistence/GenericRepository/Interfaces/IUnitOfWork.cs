@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Easy.NHibernate.Repository.Interfaces
+namespace Easy.NHibernate.Persistence.GenericRepository.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
