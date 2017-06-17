@@ -11,6 +11,8 @@ namespace Easy.NHibernate.Database.Session
                        di.ConnectionString = connectionString;
                        di.Driver<Sql2008ClientDriver>();
                        di.Dialect<MsSql2012Dialect>();
+                       di.LogFormattedSql = true;
+                       di.LogSqlInConsole = true;
                    })
         {
             //_configuration.SetProperty(Environment.Dialect, typeof(MsSql2012Dialect).AssemblyQualifiedName);

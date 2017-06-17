@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Easy.NHibernate.Domain.Interfaces;
 using Easy.NHibernate.Persistence.GenericRepository.Interfaces;
 using NHibernate;
+using NHibernate.Criterion;
 using NHibernate.Linq;
 
 namespace Easy.NHibernate.Persistence.GenericRepository
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class, IEntity
     {
         private readonly ISession _session;
 
@@ -56,10 +58,17 @@ namespace Easy.NHibernate.Persistence.GenericRepository
             }
         }
 
-        //public T Get(int id)
-        //{
-        //    return _session.Get<T>(id);
-        //}
+        public T Get(int id)
+        {
+            return _session.Get<T>(id);
+        }
+
+        public IEnumerable<T> Get(IEnumerable<int> ids)
+        {
+            return _session.QueryOver<T>()
+                           .Where(x => x.Id.IsIn(ids.ToArray()))
+                           .List();
+        }
 
         public IEnumerable<T> Query(Expression<Func<T, bool>> criteria)
         {

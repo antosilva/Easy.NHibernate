@@ -24,9 +24,12 @@ namespace Easy.NHibernate.UnitTests
             {
                 CustomersRepository repo = new CustomersRepository(session);
 
-                CustomerEntity curtomer = repo.QueryCustomer(30);
+                CustomerEntity customer = repo.QueryCustomer(30);
                 IEnumerable<CustomerEntity> all = repo.QueryAllCustomers();
                 IEnumerable<CustomerEntity> customers = repo.QueryCustomersNameStartingWith("R");
+
+                customer = repo.Get(60);
+                customers = repo.Get(new List<int> {80, 81, 82});
 
                 using (var uow = new UnitOfWork(session))
                 {
