@@ -6,7 +6,7 @@ namespace Easy.NHibernate.Domain
     {
         private int? _hashCode;
 
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         public override int GetHashCode()
         {

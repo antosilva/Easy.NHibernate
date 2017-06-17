@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Easy.NHibernate.Domain;
+﻿using Easy.NHibernate.Domain;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
-namespace Easy.NHibernate.Services.Mappings
+namespace Easy.NHibernate.Persistence.Mappings
 {
     public class CustomerMapping : ClassMapping<CustomerEntity>
     {
         public CustomerMapping()
         {
-            Table("tbl_customers");
+            Table("ta_first");
 
             Id(x => x.Id,
                m =>

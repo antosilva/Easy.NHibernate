@@ -4,9 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Easy.NHibernate.Repository.Interfaces;
 using NHibernate;
-using NHibernate.Criterion;
 using NHibernate.Linq;
-using NHibernate.Util;
 
 namespace Easy.NHibernate.Repository
 {
@@ -26,7 +24,10 @@ namespace Easy.NHibernate.Repository
 
         public void Add(IEnumerable<T> entities)
         {
-            entities.ForEach(Add);
+            foreach (T entity in entities.ToArray())
+            {
+                Add(entity);
+            }
         }
 
         public void Update(T entity)
@@ -36,7 +37,10 @@ namespace Easy.NHibernate.Repository
 
         public void Update(IEnumerable<T> entities)
         {
-            entities.ForEach(Update);
+            foreach (T entity in entities.ToArray())
+            {
+                Update(entity);
+            }
         }
 
         public void Delete(T entity)
@@ -46,13 +50,16 @@ namespace Easy.NHibernate.Repository
 
         public void Delete(IEnumerable<T> entities)
         {
-            entities.ForEach(Delete);
+            foreach (T entity in entities.ToArray())
+            {
+                Delete(entity);
+            }
         }
 
-        public T Get(int id)
-        {
-            return _session.Get<T>(id);
-        }
+        //public T Get(int id)
+        //{
+        //    return _session.Get<T>(id);
+        //}
 
         public IEnumerable<T> Query(Expression<Func<T, bool>> criteria)
         {

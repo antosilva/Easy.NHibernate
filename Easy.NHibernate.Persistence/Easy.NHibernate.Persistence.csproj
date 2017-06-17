@@ -7,8 +7,8 @@
     <ProjectGuid>{99A73459-F825-4F4C-BA39-9F4F3B00D8E1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Easy.NHibernate.Services</RootNamespace>
-    <AssemblyName>Easy.NHibernate.Services</AssemblyName>
+    <RootNamespace>Easy.NHibernate.Persistence</RootNamespace>
+    <AssemblyName>Easy.NHibernate.Persistence</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

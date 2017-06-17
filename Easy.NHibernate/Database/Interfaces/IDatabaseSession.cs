@@ -8,7 +8,7 @@ namespace Easy.NHibernate.Database.Interfaces
     public interface IDatabaseSession
     {
         void AddExportedMappingTypes(IEnumerable<Assembly> exportingAssemblies);
-        void AddMappingTypes(IEnumerable<Type> types);
+        void AddMappingTypes(IEnumerable<Type> mappingTypes);
 
         ISession OpenSession();
     }

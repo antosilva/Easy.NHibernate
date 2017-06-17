@@ -8,15 +8,14 @@ using NHibernate.Cfg;
 using NHibernate.Cfg.Loquacious;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Mapping.ByCode;
-using NHibernate.Util;
 
 namespace Easy.NHibernate.Database
 {
     public class DatabaseSession : IDatabaseSession
     {
-        private ISessionFactory _sessionFactory;
-        private readonly Configuration _configuration;
-        private readonly IList<Type> _mappings = new List<Type>();
+        protected ISessionFactory _sessionFactory;
+        protected readonly Configuration _configuration;
+        protected readonly IList<Type> _mappings = new List<Type>();
 
         public DatabaseSession(string configurationFile)
         {
@@ -30,18 +29,29 @@ namespace Easy.NHibernate.Database
             _configuration.DataBaseIntegration(databaseIntegration);
         }
 
-        public void AddExportedMappingTypes(IEnumerable<Assembly> exportingAssemblies)
+        public DatabaseSession(IDictionary<string, string> databaseProperties)
         {
-            // Select only ClassMapping<> types.
-            Type baseMappingType = typeof(IConformistHoldersProvider);
-            IEnumerable<Type> mappingTypes = exportingAssemblies.SelectMany(a => a.GetExportedTypes().Where(t => baseMappingType.IsAssignableFrom(t)));
-            AddMappingTypes(mappingTypes);
+            _configuration = new Configuration();
+            _configuration.SetProperties(databaseProperties);
         }
 
-        public void AddMappingTypes(IEnumerable<Type> types)
+        public void AddExportedMappingTypes(IEnumerable<Assembly> exportingAssemblies)
         {
-            Type[] mappingTypes = types as Type[] ?? types.ToArray();
-            mappingTypes.ForEach(_mappings.Add);
+            IEnumerable<Type> mappingTypes = exportingAssemblies.SelectMany(a => ExtractMappingTypesFrom(a.GetExportedTypes()));
+            foreach (Type mappingType in mappingTypes)
+            {
+                _mappings.Add(mappingType);
+            }
+        }
+
+        public void AddMappingTypes(IEnumerable<Type> mappingTypes)
+        {
+            var types = mappingTypes as Type[] ?? mappingTypes.ToArray();
+            var mappingTypesOnly = ExtractMappingTypesFrom(types);
+            foreach (Type mappingType in mappingTypesOnly)
+            {
+                _mappings.Add(mappingType);
+            }
         }
 
         public ISession OpenSession()
@@ -62,6 +72,12 @@ namespace Easy.NHibernate.Database
                 }
             }
             return _sessionFactory.OpenSession();
+        }
+
+        protected IEnumerable<Type> ExtractMappingTypesFrom(IEnumerable<Type> types)
+        {
+            IEnumerable<Type> mappingTypesOnly = types.Where(t => typeof(IConformistHoldersProvider).IsAssignableFrom(t));
+            return mappingTypesOnly;
         }
     }
 }
