@@ -40,6 +40,14 @@ namespace Easy.NHibernate.Database.Sessions
             }
         }
 
+        public void CompileMappings()
+        {
+            ModelMapper mapper = new ModelMapper();
+            mapper.AddMappings(_mappings);
+            HbmMapping mappings = mapper.CompileMappingForAllExplicitlyAddedEntities();
+            _configuration.AddMapping(mappings);
+        }
+
         public ISession OpenSession()
         {
             if (_sessionFactory == null)
@@ -48,11 +56,6 @@ namespace Easy.NHibernate.Database.Sessions
                 {
                     if (_sessionFactory == null)
                     {
-                        ModelMapper mapper = new ModelMapper();
-                        mapper.AddMappings(_mappings);
-                        HbmMapping mappings = mapper.CompileMappingForAllExplicitlyAddedEntities();
-                        _configuration.AddMapping(mappings);
-
                         _sessionFactory = _configuration.BuildSessionFactory();
                     }
                 }

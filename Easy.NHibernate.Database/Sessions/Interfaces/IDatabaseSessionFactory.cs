@@ -10,6 +10,8 @@ namespace Easy.NHibernate.Database.Sessions.Interfaces
         void AddMappingTypes(IEnumerable<Assembly> exportingAssemblies);
         void AddMappingTypes(IEnumerable<Type> mappingTypes);
 
+        void CompileMappings();
+
         ISession OpenSession();
     }
 }
