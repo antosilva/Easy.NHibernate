@@ -3,11 +3,11 @@ using NHibernate.Tool.hbm2ddl;
 
 namespace Easy.NHibernate.Database.Schema
 {
-    public class DatabaseSchema
+    public class SchemaExporter
     {
         protected SchemaExport _schemaExport;
 
-        public DatabaseSchema(Configuration configuration)
+        public SchemaExporter(Configuration configuration)
         {
             _schemaExport = new SchemaExport(configuration);
         }

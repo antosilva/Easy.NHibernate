@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using NHibernate;
 
-namespace Easy.NHibernate.Database.Sessions.Interfaces
+namespace Easy.NHibernate.Database.Session.Interfaces
 {
-    public interface IDatabaseSessionFactory
+    public interface IDatabaseSession
     {
         void AddMappingTypes(string exportingNamespace);
         void AddMappingTypes(IEnumerable<Assembly> exportingAssemblies);

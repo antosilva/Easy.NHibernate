@@ -1,8 +1,8 @@
-﻿using Easy.NHibernate.Domain;
+﻿using Easy.NHibernate.UnitTests.DataSource.Domain;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
-namespace Easy.NHibernate.Persistence.Mappings
+namespace Easy.NHibernate.UnitTests.DataSource.Persistence
 {
     public class CustomerMapping : ClassMapping<CustomerEntity>
     {

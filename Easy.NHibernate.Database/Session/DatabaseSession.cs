@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Easy.NHibernate.Database.Sessions.Interfaces;
+using Easy.NHibernate.Database.Session.Interfaces;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Mapping.ByCode;
 
-namespace Easy.NHibernate.Database.Sessions
+namespace Easy.NHibernate.Database.Session
 {
-    public class DatabaseSessionFactory : IDatabaseSessionFactory
+    public class DatabaseSession : IDatabaseSession
     {
         protected readonly Lazy<ISessionFactory> _sessionFactory;
         protected readonly Configuration _configuration;
         protected readonly IList<Type> _mappings;
 
-        public DatabaseSessionFactory(Configuration configuration)
+        public DatabaseSession(Configuration configuration)
         {
             _configuration = configuration;
             _mappings = new List<Type>();
@@ -41,7 +41,7 @@ namespace Easy.NHibernate.Database.Sessions
         public void AddMappingTypes(IEnumerable<Type> mappingTypes)
         {
             var types = mappingTypes as Type[] ?? mappingTypes.ToArray();
-            var mappingTypesOnly = GetMappingTypesFrom(types);
+            var mappingTypesOnly = types.Where(t => typeof(IConformistHoldersProvider).IsAssignableFrom(t));
             foreach (Type mappingType in mappingTypesOnly)
             {
                 _mappings.Add(mappingType);
@@ -59,12 +59,6 @@ namespace Easy.NHibernate.Database.Sessions
         public ISession OpenSession()
         {
             return _sessionFactory.Value.OpenSession();
-        }
-
-        protected IEnumerable<Type> GetMappingTypesFrom(IEnumerable<Type> types)
-        {
-            IEnumerable<Type> mappingTypesOnly = types.Where(t => typeof(IConformistHoldersProvider).IsAssignableFrom(t));
-            return mappingTypesOnly;
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Easy.NHibernate.Domain;
 
-namespace Easy.NHibernate.Domain
+namespace Easy.NHibernate.UnitTests.DataSource.Domain
 {
     /// <summary>
     /// Sample entity.

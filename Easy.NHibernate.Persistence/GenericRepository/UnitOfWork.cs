@@ -15,7 +15,7 @@ namespace Easy.NHibernate.Persistence.GenericRepository
 
         public void Commit()
         {
-            if (_transaction.IsActive)
+            if (_transaction?.IsActive ?? false)
             {
                 _transaction.Commit();
             }
@@ -23,7 +23,7 @@ namespace Easy.NHibernate.Persistence.GenericRepository
 
         public void Rollback()
         {
-            if (_transaction.IsActive)
+            if (_transaction?.IsActive ?? false)
             {
                 _transaction.Rollback();
             }
@@ -33,8 +33,6 @@ namespace Easy.NHibernate.Persistence.GenericRepository
 
         public void Dispose()
         {
-            Rollback();
-
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -43,6 +41,7 @@ namespace Easy.NHibernate.Persistence.GenericRepository
         {
             if (disposing)
             {
+                Rollback();
                 _transaction?.Dispose();
                 _transaction = null;
             }

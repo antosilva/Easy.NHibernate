@@ -51,9 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\InMemoryConfiguration.cs" />
-    <Compile Include="Schema\DatabaseSchema.cs" />
-    <Compile Include="Sessions\Interfaces\IDatabaseSessionFactory.cs" />
-    <Compile Include="Sessions\DatabaseSessionFactory.cs" />
+    <Compile Include="Schema\SchemaExporter.cs" />
+    <Compile Include="Session\Interfaces\IDatabaseSession.cs" />
+    <Compile Include="Session\DatabaseSession.cs" />
     <Compile Include="Configurations\MsSqlConfiguration.cs" />
     <Compile Include="Configurations\SqliteConfiguration.cs" />
     <Compile Include="Configurations\SybaseAseConfiguration.cs" />

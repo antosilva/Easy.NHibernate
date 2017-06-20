@@ -17,7 +17,7 @@ namespace Easy.NHibernate.Domain
 
             if (Id == 0)
             {
-                _hashCode = base.GetHashCode(); // Object hash code.
+                _hashCode = base.GetHashCode(); // base/Object hash code.
                 return _hashCode.Value;
             }
 

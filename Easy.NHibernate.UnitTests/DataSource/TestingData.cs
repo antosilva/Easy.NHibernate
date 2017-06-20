@@ -1,8 +1,8 @@
 ﻿using System;
 using Easy.NHibernate.Database.Configurations;
 using Easy.NHibernate.Database.Schema;
-using Easy.NHibernate.Database.Sessions;
-using Easy.NHibernate.Database.Sessions.Interfaces;
+using Easy.NHibernate.Database.Session;
+using Easy.NHibernate.Database.Session.Interfaces;
 using Easy.NHibernate.UnitTests.DataSource.Domain;
 using Easy.NHibernate.UnitTests.DataSource.Persistence;
 using NHibernate;
@@ -12,18 +12,18 @@ namespace Easy.NHibernate.UnitTests.DataSource
 {
     internal class TestingData
     {
-        public IDatabaseSessionFactory Database { get; }
+        public IDatabaseSession Database { get; }
 
         public TestingData()
         {
             Configuration configuration = new SqliteConfiguration("Data Source=UnitTest.db; Version=3;");
 
-            Database = new DatabaseSessionFactory(configuration);
+            Database = new DatabaseSession(configuration);
             Database.AddMappingTypes(typeof(AddressMappings).Namespace);
             Database.CompileMappings();
 
-            DatabaseSchema dbSchema = new DatabaseSchema(configuration);
-            dbSchema.ExportToDatabase();
+            SchemaExporter dbSchemaExporter = new SchemaExporter(configuration);
+            dbSchemaExporter.ExportToDatabase();
 
             Populate();
         }
