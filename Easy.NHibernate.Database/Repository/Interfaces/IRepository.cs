@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Easy.NHibernate.Domain.Interfaces;
+using Easy.NHibernate.Database.Domain.Interfaces;
 
-namespace Easy.NHibernate.Persistence.GenericRepository.Interfaces
+namespace Easy.NHibernate.Database.Repository.Interfaces
 {
     public interface IRepository<T> where T : class, IEntity
     {

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Easy.NHibernate.Domain;
+using Easy.NHibernate.Database.Domain;
 
 namespace Easy.NHibernate.UnitTests.DataSource.Domain
 {

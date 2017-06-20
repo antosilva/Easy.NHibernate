@@ -51,6 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\InMemoryConfiguration.cs" />
+    <Compile Include="Domain\EntityBase.cs" />
+    <Compile Include="Domain\Interfaces\IEntity.cs" />
+    <Compile Include="Repository\Interfaces\IRepository.cs" />
+    <Compile Include="Repository\Interfaces\IUnitOfWork.cs" />
+    <Compile Include="Repository\Repository.cs" />
+    <Compile Include="Repository\UnitOfWork.cs" />
     <Compile Include="Schema\SchemaExporter.cs" />
     <Compile Include="Session\Interfaces\IDatabaseSession.cs" />
     <Compile Include="Session\DatabaseSession.cs" />

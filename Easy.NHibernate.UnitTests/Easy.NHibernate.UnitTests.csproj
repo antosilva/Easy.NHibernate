@@ -83,14 +83,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Easy.NHibernate.Domain\Easy.NHibernate.Domain.csproj">
-      <Project>{18C3A917-8A0A-4905-923A-1B86900C373A}</Project>
-      <Name>Easy.NHibernate.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Easy.NHibernate.Persistence\Easy.NHibernate.Persistence.csproj">
-      <Project>{99A73459-F825-4F4C-BA39-9F4F3B00D8E1}</Project>
-      <Name>Easy.NHibernate.Persistence</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Easy.NHibernate.Database\Easy.NHibernate.Database.csproj">
       <Project>{4620FBE0-AF00-445B-AD74-847C5C00D80B}</Project>
       <Name>Easy.NHibernate.Database</Name>

@@ -3,13 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy.NHibernate.Database", ".\Easy.NHibernate.Database\Easy.NHibernate.Database.csproj", "{4620FBE0-AF00-445B-AD74-847C5C00D80B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy.NHibernate.Database", "Easy.NHibernate.Database\Easy.NHibernate.Database.csproj", "{4620FBE0-AF00-445B-AD74-847C5C00D80B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy.NHibernate.Domain", ".\Easy.NHibernate.Domain\Easy.NHibernate.Domain.csproj", "{18C3A917-8A0A-4905-923A-1B86900C373A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy.NHibernate.UnitTests", ".\Easy.NHibernate.UnitTests\Easy.NHibernate.UnitTests.csproj", "{3CBE7811-D44E-49D3-9DE2-3648A8F6104F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy.NHibernate.Persistence", ".\Easy.NHibernate.Persistence\Easy.NHibernate.Persistence.csproj", "{99A73459-F825-4F4C-BA39-9F4F3B00D8E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy.NHibernate.UnitTests", "Easy.NHibernate.UnitTests\Easy.NHibernate.UnitTests.csproj", "{3CBE7811-D44E-49D3-9DE2-3648A8F6104F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +17,10 @@ Global
 		{4620FBE0-AF00-445B-AD74-847C5C00D80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4620FBE0-AF00-445B-AD74-847C5C00D80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4620FBE0-AF00-445B-AD74-847C5C00D80B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{18C3A917-8A0A-4905-923A-1B86900C373A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18C3A917-8A0A-4905-923A-1B86900C373A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18C3A917-8A0A-4905-923A-1B86900C373A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18C3A917-8A0A-4905-923A-1B86900C373A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3CBE7811-D44E-49D3-9DE2-3648A8F6104F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3CBE7811-D44E-49D3-9DE2-3648A8F6104F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CBE7811-D44E-49D3-9DE2-3648A8F6104F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CBE7811-D44E-49D3-9DE2-3648A8F6104F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99A73459-F825-4F4C-BA39-9F4F3B00D8E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99A73459-F825-4F4C-BA39-9F4F3B00D8E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99A73459-F825-4F4C-BA39-9F4F3B00D8E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99A73459-F825-4F4C-BA39-9F4F3B00D8E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

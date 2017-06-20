@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Easy.NHibernate.Database.Configurations;
+using Easy.NHibernate.Database.Repository;
 using Easy.NHibernate.Database.Schema;
 using Easy.NHibernate.Database.Session;
 using Easy.NHibernate.Database.Session.Interfaces;
-using Easy.NHibernate.Persistence.GenericRepository;
 using Easy.NHibernate.UnitTests.DataSource;
 using Easy.NHibernate.UnitTests.DataSource.Domain;
 using Easy.NHibernate.UnitTests.DataSource.Persistence;
@@ -44,7 +44,7 @@ namespace Easy.NHibernate.UnitTests
             //}
             //return;
 
-            TestingData td = new TestingData();
+            //TestingData td = new TestingData();
 
             Configuration msSqlConfiguration = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
 

@@ -24,7 +24,8 @@ namespace Easy.NHibernate.Database.Schema
 
         public void ExportToDatabase()
         {
-            _schemaExport.Execute(false /*stdout*/, true /*execute*/, false /*just drop*/);
+            // Careful with this.
+            // _schemaExport.Execute(false /*stdout*/, true /*execute*/, false /*just drop*/);
         }
     }
 }

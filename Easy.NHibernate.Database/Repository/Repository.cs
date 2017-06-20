@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Easy.NHibernate.Domain.Interfaces;
-using Easy.NHibernate.Persistence.GenericRepository.Interfaces;
+using Easy.NHibernate.Database.Domain.Interfaces;
+using Easy.NHibernate.Database.Repository.Interfaces;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
 
-namespace Easy.NHibernate.Persistence.GenericRepository
+namespace Easy.NHibernate.Database.Repository
 {
     public class Repository<T> : IRepository<T> where T : class, IEntity
     {
