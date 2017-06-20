@@ -1,7 +1,7 @@
-using Easy.NHibernate.UnitTests.DataSource.Domain;
+using Easy.NHibernate.UnitTests.Domain;
 using NHibernate.Mapping.ByCode.Conformist;
 
-namespace Easy.NHibernate.UnitTests.DataSource.Persistence
+namespace Easy.NHibernate.UnitTests.Mappings
 {
     public class SkillsEnhancementAllowanceMappings : JoinedSubclassMapping<SkillsEnhancementAllowance>
     {

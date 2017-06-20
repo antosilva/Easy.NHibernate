@@ -3,18 +3,18 @@ using Easy.NHibernate.Database.Configurations;
 using Easy.NHibernate.Database.Schema;
 using Easy.NHibernate.Database.Session;
 using Easy.NHibernate.Database.Session.Interfaces;
-using Easy.NHibernate.UnitTests.DataSource.Domain;
-using Easy.NHibernate.UnitTests.DataSource.Persistence;
+using Easy.NHibernate.UnitTests.Domain;
+using Easy.NHibernate.UnitTests.Mappings;
 using NHibernate;
 using NHibernate.Cfg;
 
-namespace Easy.NHibernate.UnitTests.DataSource
+namespace Easy.NHibernate.UnitTests.Populate
 {
-    internal class TestingData
+    internal class PopulateData
     {
         public IDatabaseSession Database { get; }
 
-        public TestingData()
+        public PopulateData()
         {
             Configuration configuration = new SqliteConfiguration("Data Source=UnitTest.db; Version=3;");
 

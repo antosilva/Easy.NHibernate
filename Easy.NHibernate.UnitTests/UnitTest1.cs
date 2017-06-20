@@ -5,10 +5,9 @@ using Easy.NHibernate.Database.Repository;
 using Easy.NHibernate.Database.Schema;
 using Easy.NHibernate.Database.Session;
 using Easy.NHibernate.Database.Session.Interfaces;
-using Easy.NHibernate.UnitTests.DataSource;
-using Easy.NHibernate.UnitTests.DataSource.Domain;
-using Easy.NHibernate.UnitTests.DataSource.Persistence;
-using Easy.NHibernate.UnitTests.DataSource.Repositories;
+using Easy.NHibernate.UnitTests.Domain;
+using Easy.NHibernate.UnitTests.Mappings;
+using Easy.NHibernate.UnitTests.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NHibernate.Cfg;
 
@@ -44,7 +43,7 @@ namespace Easy.NHibernate.UnitTests
             //}
             //return;
 
-            //TestingData td = new TestingData();
+            //PopulateData td = new PopulateData();
 
             Configuration msSqlConfiguration = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
 

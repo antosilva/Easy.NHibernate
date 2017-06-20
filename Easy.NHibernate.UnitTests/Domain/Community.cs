@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Easy.NHibernate.Database.Domain;
 
-namespace Easy.NHibernate.UnitTests.DataSource.Domain
+namespace Easy.NHibernate.UnitTests.Domain
 {
     public class Community : EntityBase<Community>
     {

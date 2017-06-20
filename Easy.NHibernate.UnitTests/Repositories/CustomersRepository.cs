@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Easy.NHibernate.Database.Repository;
-using Easy.NHibernate.UnitTests.DataSource.Domain;
+using Easy.NHibernate.UnitTests.Domain;
 using NHibernate;
 
-namespace Easy.NHibernate.UnitTests.DataSource.Repositories
+namespace Easy.NHibernate.UnitTests.Repositories
 {
     public class CustomersRepository : Repository<CustomerEntity>
     {

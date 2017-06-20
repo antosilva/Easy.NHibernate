@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Easy.NHibernate.UnitTests.DataSource.Domain
+namespace Easy.NHibernate.UnitTests.Domain
 {
     public class SeasonTicketLoan : Benefit
     {

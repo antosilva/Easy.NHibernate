@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using Easy.NHibernate.UnitTests.DataSource.Domain;
+using Easy.NHibernate.UnitTests.Domain;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 using NHibernate.Type;
 
-namespace Easy.NHibernate.UnitTests.DataSource.Persistence
+namespace Easy.NHibernate.UnitTests.Mappings
 {
     public class EmployeeMappings : ClassMapping<Employee>
     {

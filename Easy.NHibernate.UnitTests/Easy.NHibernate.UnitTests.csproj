@@ -56,26 +56,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataSource\Domain\Address.cs" />
-    <Compile Include="DataSource\Domain\Benefit.cs" />
-    <Compile Include="DataSource\Domain\Community.cs" />
-    <Compile Include="DataSource\Domain\CustomerEntity.cs" />
-    <Compile Include="DataSource\Domain\Employee.cs" />
-    <Compile Include="DataSource\Domain\Leave.cs" />
-    <Compile Include="DataSource\Domain\LeaveType.cs" />
-    <Compile Include="DataSource\Domain\SeasonTicketLoan.cs" />
-    <Compile Include="DataSource\Domain\SkillsEnhancementAllowance.cs" />
-    <Compile Include="DataSource\Persistence\AddressMapping.cs" />
-    <Compile Include="DataSource\Persistence\BenefitMapping.cs" />
-    <Compile Include="DataSource\Persistence\CommunityMapping.cs" />
-    <Compile Include="DataSource\Persistence\CompleteEmployeeMapping.cs" />
-    <Compile Include="DataSource\Persistence\CustomerMapping.cs" />
-    <Compile Include="DataSource\Persistence\EmployeeMapping.cs" />
-    <Compile Include="DataSource\Persistence\LeaveMapping.cs" />
-    <Compile Include="DataSource\Persistence\SeasonTicketLoanMapping.cs" />
-    <Compile Include="DataSource\Persistence\SkillsEnhancementAllowance.cs" />
-    <Compile Include="DataSource\Repositories\CustomersRepository.cs" />
-    <Compile Include="DataSource\TestingData.cs" />
+    <Compile Include="Domain\Address.cs" />
+    <Compile Include="Domain\Benefit.cs" />
+    <Compile Include="Domain\Community.cs" />
+    <Compile Include="Domain\CustomerEntity.cs" />
+    <Compile Include="Domain\Employee.cs" />
+    <Compile Include="Domain\Leave.cs" />
+    <Compile Include="Domain\LeaveType.cs" />
+    <Compile Include="Domain\SeasonTicketLoan.cs" />
+    <Compile Include="Domain\SkillsEnhancementAllowance.cs" />
+    <Compile Include="Mappings\AddressMapping.cs" />
+    <Compile Include="Mappings\BenefitMapping.cs" />
+    <Compile Include="Mappings\CommunityMapping.cs" />
+    <Compile Include="Mappings\CompleteEmployeeMapping.cs" />
+    <Compile Include="Mappings\CustomerMapping.cs" />
+    <Compile Include="Mappings\EmployeeMapping.cs" />
+    <Compile Include="Mappings\LeaveMapping.cs" />
+    <Compile Include="Mappings\SeasonTicketLoanMapping.cs" />
+    <Compile Include="Mappings\SkillsEnhancementAllowance.cs" />
+    <Compile Include="Repositories\CustomersRepository.cs" />
+    <Compile Include="Populate\PopulateData.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

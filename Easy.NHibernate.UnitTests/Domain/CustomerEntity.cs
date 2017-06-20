@@ -1,6 +1,6 @@
 ﻿using Easy.NHibernate.Database.Domain;
 
-namespace Easy.NHibernate.UnitTests.DataSource.Domain
+namespace Easy.NHibernate.UnitTests.Domain
 {
     /// <summary>
     /// Sample entity.
