@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data;
 using Easy.NHibernate.Database.Repository.Interfaces;
+using Easy.NHibernate.Database.Session.Interfaces;
 using NHibernate;
 
 namespace Easy.NHibernate.Database.Repository
@@ -11,6 +13,11 @@ namespace Easy.NHibernate.Database.Repository
         public UnitOfWork(ISession session)
         {
             _transaction = session.BeginTransaction();
+        }
+
+        public UnitOfWork(ISession session, IsolationLevel isolationLevel)
+        {
+            _transaction = session.BeginTransaction(isolationLevel);
         }
 
         public void Commit()
@@ -28,8 +35,6 @@ namespace Easy.NHibernate.Database.Repository
                 _transaction.Rollback();
             }
         }
-
-        #region IDisposable
 
         public void Dispose()
         {
@@ -51,7 +56,5 @@ namespace Easy.NHibernate.Database.Repository
         {
             Dispose(false);
         }
-
-        #endregion
     }
 }

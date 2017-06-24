@@ -3,45 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Easy.NHibernate.Database.Session.Interfaces;
-using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Mapping.ByCode;
 
 namespace Easy.NHibernate.Database.Session
 {
-    public class DatabaseSession : IDatabaseSession
+    public class DatabaseMappings : IDatabaseMappings
     {
-        protected readonly Lazy<ISessionFactory> _sessionFactory;
         protected readonly Configuration _configuration;
-        protected readonly IList<Type> _mappings;
+        protected readonly IList<Type> _mappings = new List<Type>();
 
-        public DatabaseSession(Configuration configuration)
+        public DatabaseMappings(Configuration configuration)
         {
             _configuration = configuration;
-            _mappings = new List<Type>();
-            _sessionFactory = new Lazy<ISessionFactory>(() => _configuration.BuildSessionFactory());
         }
 
-        public void AddMappingTypes(string exportingNamespace)
+        public void AddMappings(string exportingNamespace)
         {
             IEnumerable<Type> types = AppDomain.CurrentDomain
                                                .GetAssemblies()
                                                .SelectMany(t => t.GetExportedTypes())
                                                .Where(t => t.Namespace == exportingNamespace && t.IsClass);
-            AddMappingTypes(types);
+            AddMappings(types);
         }
 
-        public void AddMappingTypes(IEnumerable<Assembly> exportingAssemblies)
+        public void AddMappings(IEnumerable<Assembly> exportingAssemblies)
         {
             IEnumerable<Type> exportedTypes = exportingAssemblies.SelectMany(a => a.GetExportedTypes());
-            AddMappingTypes(exportedTypes);
+            AddMappings(exportedTypes);
         }
 
-        public void AddMappingTypes(IEnumerable<Type> mappingTypes)
+        public void AddMappings(IEnumerable<Type> mappingTypes)
         {
             var types = mappingTypes as Type[] ?? mappingTypes.ToArray();
-            var mappingTypesOnly = types.Where(t => typeof(IConformistHoldersProvider).IsAssignableFrom(t));
+            IEnumerable<Type> mappingTypesOnly = types.Where(t => typeof(IConformistHoldersProvider).IsAssignableFrom(t));
             foreach (Type mappingType in mappingTypesOnly)
             {
                 _mappings.Add(mappingType);
@@ -54,11 +50,6 @@ namespace Easy.NHibernate.Database.Session
             mapper.AddMappings(_mappings);
             HbmMapping mappings = mapper.CompileMappingForAllExplicitlyAddedEntities();
             _configuration.AddMapping(mappings);
-        }
-
-        public ISession OpenSession()
-        {
-            return _sessionFactory.Value.OpenSession();
         }
     }
 }

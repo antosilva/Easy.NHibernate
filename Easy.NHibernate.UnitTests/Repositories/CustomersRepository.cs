@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Easy.NHibernate.Database.Repository;
+using Easy.NHibernate.Database.Session.Interfaces;
 using Easy.NHibernate.UnitTests.Domain;
 using NHibernate;
 

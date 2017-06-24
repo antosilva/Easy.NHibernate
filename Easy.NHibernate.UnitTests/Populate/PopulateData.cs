@@ -12,15 +12,18 @@ namespace Easy.NHibernate.UnitTests.Populate
 {
     internal class PopulateData
     {
-        public IDatabaseSession Database { get; }
+        public IDatabaseMappings DatabaseMappings { get; }
+        public IDatabaseFacade DatabaseFacade { get; }
 
         public PopulateData()
         {
             Configuration configuration = new SqliteConfiguration("Data Source=UnitTest.db; Version=3;");
 
-            Database = new DatabaseSession(configuration);
-            Database.AddMappingTypes(typeof(AddressMappings).Namespace);
-            Database.CompileMappings();
+            DatabaseMappings = new DatabaseMappings(configuration);
+            DatabaseMappings.AddMappings(typeof(AddressMappings).Namespace);
+            DatabaseMappings.CompileMappings();
+
+            DatabaseFacade = new Database.Session.DatabaseFacade(configuration);
 
             SchemaExporter dbSchemaExporter = new SchemaExporter(configuration);
             dbSchemaExporter.ExportToDatabase();
@@ -65,7 +68,7 @@ namespace Easy.NHibernate.UnitTests.Populate
                                      RemainingEntitlement = 2
                                  });
 
-            using (ISession session = Database.OpenSession())
+            using (ISession session = DatabaseFacade.CurrentSession())
             using (var trans = session.BeginTransaction())
             {
                 session.SaveOrUpdate(johnSmith);
