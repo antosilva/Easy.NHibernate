@@ -10,6 +10,7 @@ using Easy.NHibernate.UnitTests.Mappings;
 using Easy.NHibernate.UnitTests.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NHibernate;
+using NHibernate.Cache;
 using NHibernate.Cfg;
 using NHibernate.Context;
 
@@ -49,6 +50,14 @@ namespace Easy.NHibernate.UnitTests
 
             Configuration cfg = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
             cfg.CurrentSessionContext<ThreadStaticSessionContext>();
+            cfg.Cache(cache =>
+                      {
+                          cache.UseQueryCache = true;
+                          cache.Provider<HashtableCacheProvider>();
+                          //cache.QueryCache<StandardQueryCache>(); // Buggy, see hereafter for second level query cache.
+                      });
+            cfg.SetProperty(Environment.UseSecondLevelCache, "true");
+            cfg.SetProperty(Environment.QueryCacheFactory, typeof(StandardQueryCacheFactory).FullName);
 
             IDatabaseMappings mappings = new DatabaseMappings(cfg);
             mappings.AddMappings(new[] {Assembly.GetAssembly(typeof(CustomerMapping))});
