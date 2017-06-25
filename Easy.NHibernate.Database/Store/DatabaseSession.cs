@@ -1,15 +1,15 @@
-﻿using Easy.NHibernate.Database.Session.Interfaces;
+﻿using Easy.NHibernate.Database.Store.Interfaces;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Context;
 
-namespace Easy.NHibernate.Database.Session
+namespace Easy.NHibernate.Database.Store
 {
-    public class DatabaseFacade : IDatabaseFacade
+    public class DatabaseSession : IDatabaseSession
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public DatabaseFacade(Configuration configuration)
+        public DatabaseSession(Configuration configuration)
         {
             _sessionFactory = configuration.BuildSessionFactory();
         }
@@ -26,9 +26,9 @@ namespace Easy.NHibernate.Database.Session
             return session;
         }
 
-        public void Unbind()
+        public ISession UnbindCurrentSession()
         {
-            CurrentSessionContext.Unbind(_sessionFactory);
+            return CurrentSessionContext.Unbind(_sessionFactory);
         }
     }
 }

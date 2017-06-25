@@ -1,8 +1,8 @@
 ﻿using System;
 using Easy.NHibernate.Database.Configurations;
 using Easy.NHibernate.Database.Schema;
-using Easy.NHibernate.Database.Session;
-using Easy.NHibernate.Database.Session.Interfaces;
+using Easy.NHibernate.Database.Store;
+using Easy.NHibernate.Database.Store.Interfaces;
 using Easy.NHibernate.UnitTests.Domain;
 using Easy.NHibernate.UnitTests.Mappings;
 using NHibernate;
@@ -13,7 +13,7 @@ namespace Easy.NHibernate.UnitTests.Populate
     internal class PopulateData
     {
         public IDatabaseMappings DatabaseMappings { get; }
-        public IDatabaseFacade DatabaseFacade { get; }
+        public IDatabaseSession DatabaseSession { get; }
 
         public PopulateData()
         {
@@ -23,7 +23,7 @@ namespace Easy.NHibernate.UnitTests.Populate
             DatabaseMappings.AddMappings(typeof(AddressMappings).Namespace);
             DatabaseMappings.CompileMappings();
 
-            DatabaseFacade = new Database.Session.DatabaseFacade(configuration);
+            DatabaseSession = new DatabaseSession(configuration);
 
             SchemaExporter dbSchemaExporter = new SchemaExporter(configuration);
             dbSchemaExporter.ExportToDatabase();
@@ -68,7 +68,7 @@ namespace Easy.NHibernate.UnitTests.Populate
                                      RemainingEntitlement = 2
                                  });
 
-            using (ISession session = DatabaseFacade.CurrentSession())
+            using (ISession session = DatabaseSession.CurrentSession())
             using (var trans = session.BeginTransaction())
             {
                 session.SaveOrUpdate(johnSmith);

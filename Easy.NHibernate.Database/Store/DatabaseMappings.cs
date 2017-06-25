@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Easy.NHibernate.Database.Session.Interfaces;
+using Easy.NHibernate.Database.Store.Interfaces;
 using NHibernate.Cfg;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Mapping.ByCode;
 
-namespace Easy.NHibernate.Database.Session
+namespace Easy.NHibernate.Database.Store
 {
     public class DatabaseMappings : IDatabaseMappings
     {

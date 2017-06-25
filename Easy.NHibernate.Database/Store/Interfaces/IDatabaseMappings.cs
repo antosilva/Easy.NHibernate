@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using NHibernate.Cfg;
 
-namespace Easy.NHibernate.Database.Session.Interfaces
+namespace Easy.NHibernate.Database.Store.Interfaces
 {
     public interface IDatabaseMappings
     {

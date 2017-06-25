@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using Easy.NHibernate.Database.Repository.Interfaces;
-using Easy.NHibernate.Database.Session.Interfaces;
 using NHibernate;
 
 namespace Easy.NHibernate.Database.Repository

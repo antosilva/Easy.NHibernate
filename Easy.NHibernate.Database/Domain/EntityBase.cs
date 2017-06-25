@@ -2,7 +2,7 @@
 
 namespace Easy.NHibernate.Database.Domain
 {
-    public class EntityBase<T> : IEntity where T : EntityBase<T>
+    public abstract class EntityBase<T> : IEntity where T : EntityBase<T>
     {
         private int? _hashCode;
 

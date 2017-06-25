@@ -3,12 +3,13 @@ using System.Reflection;
 using Easy.NHibernate.Database.Configurations;
 using Easy.NHibernate.Database.Repository;
 using Easy.NHibernate.Database.Schema;
-using Easy.NHibernate.Database.Session;
-using Easy.NHibernate.Database.Session.Interfaces;
+using Easy.NHibernate.Database.Store;
+using Easy.NHibernate.Database.Store.Interfaces;
 using Easy.NHibernate.UnitTests.Domain;
 using Easy.NHibernate.UnitTests.Mappings;
 using Easy.NHibernate.UnitTests.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Context;
 
@@ -21,25 +22,25 @@ namespace Easy.NHibernate.UnitTests
         public void TestMethod1()
         {
             //Configuration sqlite = new SqliteConfiguration("Data Source=mydb.db;Version=3;");
-            //IDatabaseMappings databaseFacade = new DatabaseMappings(sqlite);
-            //databaseFacade.AddMappings(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
-            //databaseFacade.CompileMappings();
+            //IDatabaseMappings databaseSession = new DatabaseMappings(sqlite);
+            //databaseSession.AddMappings(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
+            //databaseSession.CompileMappings();
             //SchemaExporter schlite = new SchemaExporter(sqlite);
             //schlite.ExportToConsole();
             //schlite.ExportToDatabase();
-            //using (ISession sqliteSession = databaseFacade.OpenSession())
+            //using (ISession sqliteSession = databaseSession.OpenSession())
             //{
             //}
             //return;
 
             //InMemoryConfiguration sqlite = new InMemoryConfiguration();
-            //IDatabaseMappings databaseFacade = new DatabaseMappings(sqlite);
-            //databaseFacade.AddMappings(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
-            //databaseFacade.CompileMappings();
+            //IDatabaseMappings databaseSession = new DatabaseMappings(sqlite);
+            //databaseSession.AddMappings(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
+            //databaseSession.CompileMappings();
             //SchemaExporter schlite = new SchemaExporter(sqlite);
             //schlite.ExportToConsole();
             //schlite.ExportToDatabase();
-            //using (ISession sqlitesession = databaseFacade.OpenSession())
+            //using (ISession sqlitesession = databaseSession.OpenSession())
             //{
             //}
             //return;
@@ -57,9 +58,9 @@ namespace Easy.NHibernate.UnitTests
             sch.ExportToFile(@".\schema.sql");
             sch.ExportToConsole();
 
-            IDatabaseFacade databaseFacade = new DatabaseFacade(cfg);
+            IDatabaseSession databaseSession = new DatabaseSession(cfg);
 
-            using (var session = databaseFacade.CurrentSession())
+            using (ISession session = databaseSession.CurrentSession())
             {
                 CustomersRepository repo = new CustomersRepository(session);
 
