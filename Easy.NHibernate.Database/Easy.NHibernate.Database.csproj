@@ -57,17 +57,20 @@
     <Compile Include="Repository\Interfaces\IUnitOfWork.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
+    <Compile Include="Schema\Interfaces\ISchemaExporter.cs" />
     <Compile Include="Schema\SchemaExporter.cs" />
-    <Compile Include="Store\Interfaces\IDatabaseMappings.cs" />
-    <Compile Include="Store\DatabaseMappings.cs" />
+    <Compile Include="Mappings\Interfaces\IModelMappings.cs" />
+    <Compile Include="Mappings\ModelMappings.cs" />
     <Compile Include="Configurations\MsSqlConfiguration.cs" />
     <Compile Include="Configurations\SqliteConfiguration.cs" />
     <Compile Include="Configurations\SybaseAseConfiguration.cs" />
     <Compile Include="Drivers\Sybase\SybaseAdoNet45AseDriver.cs" />
     <Compile Include="Drivers\Sybase\SybaseAdoNet4AseDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Store\Interfaces\IDatabaseSession.cs" />
-    <Compile Include="Store\DatabaseSession.cs" />
+    <Compile Include="Session\Interfaces\ISessionManager.cs" />
+    <Compile Include="Session\CurrentSessionContextManager.cs" />
+    <Compile Include="Store\DataStore.cs" />
+    <Compile Include="Store\Interfaces\IDataStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

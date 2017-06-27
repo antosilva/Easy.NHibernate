@@ -3,6 +3,7 @@ using System.Linq;
 using Easy.NHibernate.Database.Repository;
 using Easy.NHibernate.UnitTests.Domain;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace Easy.NHibernate.UnitTests.Repositories
 {

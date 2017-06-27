@@ -1,18 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Easy.NHibernate.Database.Configurations;
+using Easy.NHibernate.Database.Mappings;
+using Easy.NHibernate.Database.Mappings.Interfaces;
 using Easy.NHibernate.Database.Repository;
 using Easy.NHibernate.Database.Schema;
+using Easy.NHibernate.Database.Schema.Interfaces;
+using Easy.NHibernate.Database.Session;
+using Easy.NHibernate.Database.Session.Interfaces;
 using Easy.NHibernate.Database.Store;
 using Easy.NHibernate.Database.Store.Interfaces;
 using Easy.NHibernate.UnitTests.Domain;
 using Easy.NHibernate.UnitTests.Mappings;
+using Easy.NHibernate.UnitTests.Populate;
 using Easy.NHibernate.UnitTests.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NHibernate;
 using NHibernate.Cache;
 using NHibernate.Cfg;
 using NHibernate.Context;
+using NHibernate.Criterion;
 
 namespace Easy.NHibernate.UnitTests
 {
@@ -22,8 +30,9 @@ namespace Easy.NHibernate.UnitTests
         [TestMethod]
         public void TestMethod1()
         {
+            #region Comments
             //Configuration sqlite = new SqliteConfiguration("Data Source=mydb.db;Version=3;");
-            //IDatabaseMappings databaseSession = new DatabaseMappings(sqlite);
+            //IModelMappings databaseSession = new ModelMappings(sqlite);
             //databaseSession.AddMappings(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
             //databaseSession.CompileMappings();
             //SchemaExporter schlite = new SchemaExporter(sqlite);
@@ -35,7 +44,7 @@ namespace Easy.NHibernate.UnitTests
             //return;
 
             //InMemoryConfiguration sqlite = new InMemoryConfiguration();
-            //IDatabaseMappings databaseSession = new DatabaseMappings(sqlite);
+            //IModelMappings databaseSession = new ModelMappings(sqlite);
             //databaseSession.AddMappings(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
             //databaseSession.CompileMappings();
             //SchemaExporter schlite = new SchemaExporter(sqlite);
@@ -47,49 +56,53 @@ namespace Easy.NHibernate.UnitTests
             //return;
 
             //PopulateData td = new PopulateData();
+            #endregion
 
             Configuration cfg = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
             cfg.CurrentSessionContext<ThreadStaticSessionContext>();
-            cfg.Cache(cache =>
-                      {
-                          cache.UseQueryCache = true;
-                          cache.Provider<HashtableCacheProvider>();
-                          //cache.QueryCache<StandardQueryCache>(); // Buggy, see hereafter for second level query cache.
-                      });
-            cfg.SetProperty(Environment.UseSecondLevelCache, "true");
-            cfg.SetProperty(Environment.QueryCacheFactory, typeof(StandardQueryCacheFactory).FullName);
+            //cfg.Cache(cache =>
+            //          {
+            //              cache.UseQueryCache = true;
+            //              cache.Provider<HashtableCacheProvider>();
+            //              //cache.QueryCache<StandardQueryCache>(); // Buggy, see hereafter for second level query cache.
+            //          });
+            //cfg.SetProperty(Environment.UseSecondLevelCache, "true");
+            //cfg.SetProperty(Environment.QueryCacheFactory, typeof(StandardQueryCacheFactory).FullName);
 
-            IDatabaseMappings mappings = new DatabaseMappings(cfg);
-            mappings.AddMappings(new[] {Assembly.GetAssembly(typeof(CustomerMapping))});
-            mappings.CompileMappings();
+            IModelMappings modelMappings = new ModelMappings(cfg);
+            ISessionManager sessionManager = new CurrentSessionContextManager(cfg);
+            ISchemaExporter schemaExporter = new SchemaExporter(cfg);
 
-            SchemaExporter sch = new SchemaExporter(cfg);
-            sch.ExportToFile(@".\schema.sql");
-            sch.ExportToConsole();
+            IDataStore dataStore = new DataStore(modelMappings, sessionManager, schemaExporter);
+            dataStore.AddMappings(new []{Assembly.GetAssembly(typeof(CustomerMapping))});
+            dataStore.CompileMappings();
+            dataStore.ExportToFile(@".\schema.sql");
+            //dataStore.ExportToDatabase();
+            dataStore.ExportToConsole();
 
-            IDatabaseSession databaseSession = new DatabaseSession(cfg);
+            ISession session = dataStore.CurrentSession();
 
-            using (ISession session = databaseSession.CurrentSession())
-            {
-                CustomersRepository repo = new CustomersRepository(session);
+            CustomersRepository repo = new CustomersRepository(session);
 
-                CustomerEntity customer = repo.QueryCustomer(30);
-                IEnumerable<CustomerEntity> all = repo.QueryAllCustomers();
-                IEnumerable<CustomerEntity> customers = repo.QueryCustomersNameStartingWith("R");
+            int n = repo.Count();
+            n = repo.Count(x => x.Name.StartsWith("D"));
 
-                customer = repo.Get(60);
-                customers = repo.Get(new List<int> {80, 81, 82});
+            CustomerEntity customer = repo.QueryCustomer(30);
+            IEnumerable<CustomerEntity> all = repo.QueryAllCustomers();
+            IEnumerable<CustomerEntity> customers = repo.QueryCustomersNameStartingWith("J");
 
-                using (var uow = new UnitOfWork(session))
-                {
-                    CustomerEntity newCustomer = new CustomerEntity
-                                                 {
-                                                     Name = "TEST"
-                                                 };
-                    repo.Add(newCustomer);
-                    uow.Commit();
-                }
-            }
+            customer = repo.Get(60);
+            var cs = repo.Get(new List<int> {80, 81, 82, 3}).ToList();
+
+            //using (var uow = new UnitOfWork(session))
+            //{
+            //    CustomerEntity newCustomer = new CustomerEntity
+            //                                 {
+            //                                     Name = "TEST"
+            //                                 };
+            //    repo.Add(newCustomer);
+            //    uow.Commit();
+            //}
         }
     }
 }

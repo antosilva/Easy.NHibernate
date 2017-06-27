@@ -1,9 +1,10 @@
-﻿using NHibernate.Cfg;
+﻿using Easy.NHibernate.Database.Schema.Interfaces;
+using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 
 namespace Easy.NHibernate.Database.Schema
 {
-    public class SchemaExporter
+    public class SchemaExporter : ISchemaExporter
     {
         protected SchemaExport _schemaExport;
 
@@ -24,8 +25,7 @@ namespace Easy.NHibernate.Database.Schema
 
         public void ExportToDatabase()
         {
-            // Careful with this.
-            // _schemaExport.Execute(false /*stdout*/, true /*execute*/, false /*just drop*/);
+            _schemaExport.Execute(false /*stdout*/, true /*execute*/, false /*just drop*/);
         }
     }
 }

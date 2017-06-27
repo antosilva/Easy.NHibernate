@@ -65,16 +65,22 @@ namespace Easy.NHibernate.Database.Repository
 
         public IEnumerable<T> Get(IEnumerable<int> ids)
         {
-            return _session.QueryOver<T>()
-                           .Where(x => x.Id.IsIn(ids.ToArray()))
-                           .List();
+            return _session.Query<T>().Where(x => ids.Contains(x.Id));
+        }
+
+        public int Count()
+        {
+            return _session.Query<T>().Count();
+        }
+
+        public int Count(Expression<Func<T, bool>> criteria)
+        {
+            return _session.Query<T>().Where(criteria).Count();
         }
 
         public IEnumerable<T> Query(Expression<Func<T, bool>> criteria)
         {
-            return _session.Query<T>()
-                           .Where(criteria)
-                           .ToList();
+            return _session.Query<T>().Where(criteria).ToList();
         }
 
         public IEnumerable<T> Query(Expression<Func<T, bool>> criteria, int pageNumber, int itemsPerPage)

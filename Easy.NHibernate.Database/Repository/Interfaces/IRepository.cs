@@ -19,6 +19,9 @@ namespace Easy.NHibernate.Database.Repository.Interfaces
         T Get(int id);
         IEnumerable<T> Get(IEnumerable<int> ids);
 
+        int Count();
+        int Count(Expression<Func<T, bool>> criteria);
+
         IEnumerable<T> Query(Expression<Func<T, bool>> criteria);
         IEnumerable<T> Query(Expression<Func<T, bool>> criteria, int pageNumber, int itemsPerPage);
     }

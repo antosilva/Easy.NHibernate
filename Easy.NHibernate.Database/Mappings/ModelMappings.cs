@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Easy.NHibernate.Database.Store.Interfaces;
+using Easy.NHibernate.Database.Mappings.Interfaces;
 using NHibernate.Cfg;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Mapping.ByCode;
 
-namespace Easy.NHibernate.Database.Store
+namespace Easy.NHibernate.Database.Mappings
 {
-    public class DatabaseMappings : IDatabaseMappings
+    public class ModelMappings : IModelMappings
     {
         protected readonly Configuration _configuration;
         protected readonly IList<Type> _mappings = new List<Type>();
 
-        public DatabaseMappings(Configuration configuration)
+        public ModelMappings(Configuration configuration)
         {
             _configuration = configuration;
         }
@@ -28,10 +28,24 @@ namespace Easy.NHibernate.Database.Store
             AddMappings(types);
         }
 
+        public void AddMappings(Assembly exportingAssembly)
+        {
+            IEnumerable<Type> exportedTypes = exportingAssembly.GetExportedTypes();
+            AddMappings(exportedTypes);
+        }
+
         public void AddMappings(IEnumerable<Assembly> exportingAssemblies)
         {
             IEnumerable<Type> exportedTypes = exportingAssemblies.SelectMany(a => a.GetExportedTypes());
             AddMappings(exportedTypes);
+        }
+
+        public void AddMappings(Type mappingType)
+        {
+            if(typeof(IConformistHoldersProvider).IsAssignableFrom(mappingType))
+            {
+                _mappings.Add(mappingType);
+            }
         }
 
         public void AddMappings(IEnumerable<Type> mappingTypes)

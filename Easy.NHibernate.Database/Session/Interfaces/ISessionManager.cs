@@ -1,8 +1,8 @@
 ﻿using NHibernate;
 
-namespace Easy.NHibernate.Database.Store.Interfaces
+namespace Easy.NHibernate.Database.Session.Interfaces
 {
-    public interface IDatabaseSession
+    public interface ISessionManager
     {
         ISession CurrentSession();
         ISession UnbindCurrentSession();

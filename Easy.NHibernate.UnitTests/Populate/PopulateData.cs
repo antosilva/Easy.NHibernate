@@ -1,6 +1,9 @@
 ﻿using System;
 using Easy.NHibernate.Database.Configurations;
+using Easy.NHibernate.Database.Mappings.Interfaces;
 using Easy.NHibernate.Database.Schema;
+using Easy.NHibernate.Database.Session;
+using Easy.NHibernate.Database.Session.Interfaces;
 using Easy.NHibernate.Database.Store;
 using Easy.NHibernate.Database.Store.Interfaces;
 using Easy.NHibernate.UnitTests.Domain;
@@ -12,18 +15,18 @@ namespace Easy.NHibernate.UnitTests.Populate
 {
     internal class PopulateData
     {
-        public IDatabaseMappings DatabaseMappings { get; }
-        public IDatabaseSession DatabaseSession { get; }
+        public IModelMappings ModelMappings { get; }
+        public ISessionManager SessionManager { get; }
 
         public PopulateData()
         {
             Configuration configuration = new SqliteConfiguration("Data Source=UnitTest.db; Version=3;");
 
-            DatabaseMappings = new DatabaseMappings(configuration);
-            DatabaseMappings.AddMappings(typeof(AddressMappings).Namespace);
-            DatabaseMappings.CompileMappings();
+            ModelMappings = new Database.Mappings.ModelMappings(configuration);
+            ModelMappings.AddMappings(typeof(AddressMappings).Namespace);
+            ModelMappings.CompileMappings();
 
-            DatabaseSession = new DatabaseSession(configuration);
+            SessionManager = new CurrentSessionContextManager(configuration);
 
             SchemaExporter dbSchemaExporter = new SchemaExporter(configuration);
             dbSchemaExporter.ExportToDatabase();
@@ -68,7 +71,7 @@ namespace Easy.NHibernate.UnitTests.Populate
                                      RemainingEntitlement = 2
                                  });
 
-            using (ISession session = DatabaseSession.CurrentSession())
+            using (ISession session = SessionManager.CurrentSession())
             using (var trans = session.BeginTransaction())
             {
                 session.SaveOrUpdate(johnSmith);
