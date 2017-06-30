@@ -72,9 +72,9 @@ namespace Easy.NHibernate.Database.Store
             _schemaExporter.ExportToConsole();
         }
 
-        public void ExportToDatabase()
+        public string ExportToDatabase(ISession session)
         {
-            _schemaExporter.ExportToDatabase();
+            return _schemaExporter.ExportToDatabase(session);
         }
 
         public void Dispose()

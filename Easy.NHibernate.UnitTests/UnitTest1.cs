@@ -58,8 +58,8 @@ namespace Easy.NHibernate.UnitTests
             //PopulateData td = new PopulateData();
             #endregion
 
-            Configuration cfg = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
-            cfg.CurrentSessionContext<ThreadStaticSessionContext>();
+            //Configuration cfg = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
+            Configuration cfg = new InMemoryConfiguration();
             //cfg.Cache(cache =>
             //          {
             //              cache.UseQueryCache = true;
@@ -74,25 +74,28 @@ namespace Easy.NHibernate.UnitTests
             ISchemaExporter schemaExporter = new SchemaExporter(cfg);
 
             IDataStore dataStore = new DataStore(modelMappings, sessionManager, schemaExporter);
-            dataStore.AddMappings(new []{Assembly.GetAssembly(typeof(CustomerMapping))});
+            dataStore.AddMappings(Assembly.GetAssembly(typeof(CustomerMapping)));
             dataStore.CompileMappings();
             dataStore.ExportToFile(@".\schema.sql");
-            //dataStore.ExportToDatabase();
             dataStore.ExportToConsole();
 
             ISession session = dataStore.CurrentSession();
 
+            string schema = dataStore.ExportToDatabase(session);
+
             CustomersRepository repo = new CustomersRepository(session);
 
             int n = repo.Count();
-            n = repo.Count(x => x.Name.StartsWith("D"));
+            //n = repo.Count(x => x.Name.StartsWith("D"));
+
+            var vv = repo.GetAllBetween(0, 2);
 
             CustomerEntity customer = repo.QueryCustomer(30);
             IEnumerable<CustomerEntity> all = repo.QueryAllCustomers();
-            IEnumerable<CustomerEntity> customers = repo.QueryCustomersNameStartingWith("J");
+            IEnumerable<CustomerEntity> customers = repo.QueryCustomersWithNameLike("J%");
 
-            customer = repo.Get(60);
-            var cs = repo.Get(new List<int> {80, 81, 82, 3}).ToList();
+            customer = repo.GetById(60);
+            var cs = repo.GetByIdIn(new List<int> {80, 81, 82, 3}).ToList();
 
             //using (var uow = new UnitOfWork(session))
             //{
@@ -100,7 +103,7 @@ namespace Easy.NHibernate.UnitTests
             //                                 {
             //                                     Name = "TEST"
             //                                 };
-            //    repo.Add(newCustomer);
+            //    repo.Save(newCustomer);
             //    uow.Commit();
             //}
         }

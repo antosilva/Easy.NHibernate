@@ -29,7 +29,7 @@ namespace Easy.NHibernate.UnitTests.Populate
             SessionManager = new CurrentSessionContextManager(configuration);
 
             SchemaExporter dbSchemaExporter = new SchemaExporter(configuration);
-            dbSchemaExporter.ExportToDatabase();
+            dbSchemaExporter.ExportToDatabase(SessionManager.CurrentSession());
 
             Populate();
         }

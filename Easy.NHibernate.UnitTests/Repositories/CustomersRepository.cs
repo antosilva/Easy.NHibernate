@@ -16,17 +16,17 @@ namespace Easy.NHibernate.UnitTests.Repositories
 
         public CustomerEntity QueryCustomer(int id)
         {
-            return Query(x => x.Id == id).FirstOrDefault();
+            return GetAll(x => x.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<CustomerEntity> QueryAllCustomers()
         {
-            return Query(x => true);
+            return GetAll();
         }
 
-        public IEnumerable<CustomerEntity> QueryCustomersNameStartingWith(string nameStartingWith)
+        public IEnumerable<CustomerEntity> QueryCustomersWithNameLike(string nameLike)
         {
-            return Query(x => x.Name.StartsWith(nameStartingWith));
+            return GetAll(x => x.Name.IsLike(nameLike));
         }
     }
 }

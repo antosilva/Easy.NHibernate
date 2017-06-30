@@ -1,4 +1,6 @@
-﻿using Easy.NHibernate.Database.Schema.Interfaces;
+﻿using System.IO;
+using Easy.NHibernate.Database.Schema.Interfaces;
+using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 
@@ -23,9 +25,11 @@ namespace Easy.NHibernate.Database.Schema
             _schemaExport.Execute(true /*stdout*/, false /*execute*/, false /*just drop*/);
         }
 
-        public void ExportToDatabase()
+        public string ExportToDatabase(ISession session)
         {
-            _schemaExport.Execute(false /*stdout*/, true /*execute*/, false /*just drop*/);
+            StringWriter sw = new StringWriter();
+            _schemaExport.Execute(false /*stdout*/, true /*execute*/, false /*just drop*/, session.Connection, sw);
+            return sw.ToString();
         }
     }
 }

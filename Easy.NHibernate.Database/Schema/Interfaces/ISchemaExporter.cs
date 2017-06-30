@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NHibernate;
 
 namespace Easy.NHibernate.Database.Schema.Interfaces
 {
@@ -9,6 +10,6 @@ namespace Easy.NHibernate.Database.Schema.Interfaces
     {
         void ExportToFile(string fileName);
         void ExportToConsole();
-        void ExportToDatabase();
+        string ExportToDatabase(ISession session);
     }
 }

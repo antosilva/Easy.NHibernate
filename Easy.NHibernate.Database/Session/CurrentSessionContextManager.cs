@@ -13,6 +13,7 @@ namespace Easy.NHibernate.Database.Session
 
         public CurrentSessionContextManager(Configuration configuration)
         {
+            configuration.CurrentSessionContext<ThreadStaticSessionContext>();
             _sessionFactory = new Lazy<ISessionFactory>(configuration.BuildSessionFactory);
         }
 

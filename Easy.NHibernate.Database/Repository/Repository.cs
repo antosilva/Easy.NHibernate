@@ -19,16 +19,16 @@ namespace Easy.NHibernate.Database.Repository
             _session = session;
         }
 
-        public void Add(T entity)
+        public void Save(T entity)
         {
             _session.SaveOrUpdate(entity);
         }
 
-        public void Add(IEnumerable<T> entities)
+        public void Save(IEnumerable<T> entities)
         {
             foreach (T entity in entities.ToArray())
             {
-                Add(entity);
+                Save(entity);
             }
         }
 
@@ -58,38 +58,86 @@ namespace Easy.NHibernate.Database.Repository
             }
         }
 
-        public T Get(int id)
+        public T GetById(int id)
         {
             return _session.Get<T>(id);
         }
 
-        public IEnumerable<T> Get(IEnumerable<int> ids)
+        public IEnumerable<T> GetByIdIn(IEnumerable<int> ids)
         {
-            return _session.Query<T>().Where(x => ids.Contains(x.Id));
+            return _session.QueryOver<T>()
+                           .Where(x => x.Id.IsIn(ids.ToArray()))
+                           .OrderBy(x => x.Id)
+                           .Asc
+                           .List();
         }
 
         public int Count()
         {
-            return _session.Query<T>().Count();
+            return _session.QueryOver<T>()
+                           .RowCount();
         }
 
         public int Count(Expression<Func<T, bool>> criteria)
         {
-            return _session.Query<T>().Where(criteria).Count();
-        }
-
-        public IEnumerable<T> Query(Expression<Func<T, bool>> criteria)
-        {
-            return _session.Query<T>().Where(criteria).ToList();
-        }
-
-        public IEnumerable<T> Query(Expression<Func<T, bool>> criteria, int pageNumber, int itemsPerPage)
-        {
-            return _session.Query<T>()
+            return _session.QueryOver<T>()
                            .Where(criteria)
-                           .Skip(pageNumber * itemsPerPage)
-                           .Take(itemsPerPage)
-                           .ToList();
+                           .RowCount();
+        }
+
+        public IEnumerable<T> GetAllBetween(int startId, int endId)
+        {
+            return _session.QueryOver<T>()
+                           .Where(x => x.Id.IsBetween(startId).And(endId))
+                           .OrderBy(x => x.Id)
+                           .Asc
+                           .List();
+        }
+
+        //public IEnumerable<T> GetAllBetween(Expression<Func<T, bool>> criteria, int startId, int endId)
+        //{
+        //    return _session.QueryOver<T>()
+        //                   .Where(criteria)
+        //                   .And(x => x.Id.IsBetween(startId).And(endId))
+        //                   .OrderBy(x => x.Id)
+        //                   .Asc
+        //                   .List();
+        //}
+
+        public IEnumerable<T> GetAll()
+        {
+            return _session.QueryOver<T>()
+                           .OrderBy(x => x.Id)
+                           .Asc
+                           .List();
+        }
+
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> criteria)
+        {
+            return _session.QueryOver<T>()
+                           .Where(criteria)
+                           .OrderBy(x => x.Id)
+                           .Asc
+                           .List();
+        }
+
+        public IEnumerable<int> GetAllIds()
+        {
+            return _session.QueryOver<T>()
+                           .OrderBy(x => x.Id)
+                           .Asc
+                           .Select(x => x.Id)
+                           .List<int>();
+        }
+
+        public IEnumerable<int> GetAllIds(Expression<Func<T, bool>> criteria)
+        {
+            return _session.QueryOver<T>()
+                           .Where(criteria)
+                           .OrderBy(x => x.Id)
+                           .Asc
+                           .Select(x => x.Id)
+                           .List<int>();
         }
     }
 }

@@ -7,8 +7,8 @@ namespace Easy.NHibernate.Database.Repository.Interfaces
 {
     public interface IRepository<T> where T : class, IEntity
     {
-        void Add(T entity);
-        void Add(IEnumerable<T> entities);
+        void Save(T entity);
+        void Save(IEnumerable<T> entities);
 
         void Update(T entity);
         void Update(IEnumerable<T> entities);
@@ -16,13 +16,19 @@ namespace Easy.NHibernate.Database.Repository.Interfaces
         void Delete(T entity);
         void Delete(IEnumerable<T> entities);
 
-        T Get(int id);
-        IEnumerable<T> Get(IEnumerable<int> ids);
+        T GetById(int id);
+        IEnumerable<T> GetByIdIn(IEnumerable<int> ids);
+
+        IEnumerable<int> GetAllIds();
+        IEnumerable<int> GetAllIds(Expression<Func<T, bool>> criteria);
 
         int Count();
         int Count(Expression<Func<T, bool>> criteria);
 
-        IEnumerable<T> Query(Expression<Func<T, bool>> criteria);
-        IEnumerable<T> Query(Expression<Func<T, bool>> criteria, int pageNumber, int itemsPerPage);
+        IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll(Expression<Func<T, bool>> criteria);
+
+        // For paging.
+        IEnumerable<T> GetAllBetween(int startId, int endId);
     }
 }
