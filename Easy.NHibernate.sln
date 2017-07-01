@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy.NHibernate.Database", "Easy.NHibernate.Database\Easy.NHibernate.Database.csproj", "{4620FBE0-AF00-445B-AD74-847C5C00D80B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy.NHibernate", "Easy.NHibernate\Easy.NHibernate.csproj", "{4620FBE0-AF00-445B-AD74-847C5C00D80B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy.NHibernate.UnitTests", "Easy.NHibernate.UnitTests\Easy.NHibernate.UnitTests.csproj", "{3CBE7811-D44E-49D3-9DE2-3648A8F6104F}"
 EndProject

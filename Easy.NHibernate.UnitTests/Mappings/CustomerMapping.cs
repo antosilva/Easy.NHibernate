@@ -1,6 +1,7 @@
 ﻿using Easy.NHibernate.UnitTests.Domain;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
+using NHibernate.Type;
 
 namespace Easy.NHibernate.UnitTests.Mappings
 {
@@ -8,7 +9,7 @@ namespace Easy.NHibernate.UnitTests.Mappings
     {
         public CustomerMapping()
         {
-            Table("ta_first");
+            Table("tbl_customers");
 
             Id(x => x.Id,
                m =>
@@ -21,6 +22,13 @@ namespace Easy.NHibernate.UnitTests.Mappings
                      m =>
                      {
                          m.Column("name");
+                     });
+
+            Property(x => x.PaymentDate,
+                     m =>
+                     {
+                         m.Column("payment_date");
+                         m.Type<DateTimeType>();
                      });
         }
     }

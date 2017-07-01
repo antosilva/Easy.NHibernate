@@ -1,12 +1,11 @@
-﻿using Easy.NHibernate.Database.Domain;
+﻿using System;
+using Easy.NHibernate.Domain;
 
 namespace Easy.NHibernate.UnitTests.Domain
 {
-    /// <summary>
-    /// Sample entity.
-    /// </summary>
     public class CustomerEntity : EntityBase<CustomerEntity>
     {
         public virtual string Name { get; set; }
+        public virtual DateTime PaymentDate { get; set; }
     }
 }
