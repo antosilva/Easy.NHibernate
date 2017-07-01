@@ -72,12 +72,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AAA\ArrangeActAssert.cs" />
+    <Compile Include="EntityBaseTests.cs" />
     <Compile Include="RepositoryTests.cs" />
     <Compile Include="Domain\CustomerEntity.cs" />
     <Compile Include="Mappings\CustomerMapping.cs" />
     <Compile Include="Queries\QueryIds.cs" />
     <Compile Include="Repositories\CustomersRepository.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="Sandbox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

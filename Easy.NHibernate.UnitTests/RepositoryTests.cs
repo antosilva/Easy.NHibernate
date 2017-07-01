@@ -52,7 +52,6 @@ namespace Easy.NHibernate.UnitTests
             DataStore.CompileMappings();
 
             Schema = DataStore.ExportToDatabase();
-            string s = DataStore.ExportToString();
 
             ObjectUnderTest = new Repository<CustomerEntity>(sessionManager.CurrentSession());
         }

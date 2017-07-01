@@ -24,7 +24,7 @@ using NHibernate.Tool.hbm2ddl;
 namespace Easy.NHibernate.UnitTests
 {
     [TestClass]
-    public class UnitTest1
+    public class Sandbox
     {
         [TestMethod]
         public void TestMethod1()
