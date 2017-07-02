@@ -6,7 +6,7 @@ namespace Easy.NHibernate.Domain
     {
         private int? _hashCode;
 
-        public virtual int Id { get; set; }
+        public virtual int Id { get; protected set; }
 
         public override int GetHashCode()
         {
@@ -15,6 +15,7 @@ namespace Easy.NHibernate.Domain
                 return _hashCode.Value;
             }
 
+            // Transient entity.
             if (Id == 0)
             {
                 _hashCode = base.GetHashCode();
@@ -32,6 +33,7 @@ namespace Easy.NHibernate.Domain
                 return false;
             }
 
+            // Both transient entities.
             if (Id == 0 && other.Id == 0)
             {
                 return ReferenceEquals(this, other);

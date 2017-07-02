@@ -5,7 +5,7 @@ using NHibernate.Type;
 
 namespace Easy.NHibernate.UnitTests.Mappings
 {
-    public class CustomerMapping : ClassMapping<CustomerEntity>
+    internal class CustomerMapping : ClassMapping<CustomerEntity>
     {
         public CustomerMapping()
         {

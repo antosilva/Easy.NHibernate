@@ -39,9 +39,12 @@ namespace Easy.NHibernate.UnitTests
                             new CustomerEntity {Name = "Ric", PaymentDate = DateTime.Today.AddDays(+10)},
                         };
 
-            // Configuration configuration = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
+            //Configuration configuration = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
+            //Configuration configuration = new SqliteConfiguration("Data Source=testDB.db;Version=3;");
+
             Configuration configuration = new InMemoryConfiguration();
             configuration.CurrentSessionContext<CallSessionContext>(); // Per call session context.
+            configuration.DataBaseIntegration(di => { di.LogSqlInConsole = false; });
 
             IModelMappings mappings = new ModelMappings(configuration);
             ISessionManager sessionManager = new SessionManager(configuration);
@@ -253,7 +256,9 @@ namespace Easy.NHibernate.UnitTests
         [Test]
         public void Assert_the_update_has_been_saved_and_retrieved()
         {
-            CustomerRetrieved.Should().Be(new CustomerEntity {Id = ModifiedCustomerId, Name = ModifiedCustomer.Name, PaymentDate = DateTime.Now.Date.AddDays(-100)});
+            var e = new CustomerEntity {Name = ModifiedCustomer.Name, PaymentDate = DateTime.Now.Date.AddDays(-100)};
+            e.ChangeId(ModifiedCustomerId);
+            CustomerRetrieved.Should().Be(e);
         }
     }
 }

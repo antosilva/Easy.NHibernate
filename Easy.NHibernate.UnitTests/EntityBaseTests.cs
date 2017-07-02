@@ -6,6 +6,12 @@ namespace Easy.NHibernate.UnitTests
 {
     internal class EntityStub : EntityBase<EntityStub>
     {
+        // For unit tests only.
+        public void ChangeId(int id)
+        {
+            Id = id;
+        }
+
         public static EntityStub Create(int id)
         {
             return new EntityStub {Id = id};
@@ -67,7 +73,7 @@ namespace Easy.NHibernate.UnitTests
         }
 
         [Test]
-        public void Assert_inherited_entity_equality()
+        public void Assert_inherited_entities_are_equal()
         {
             EntityStub e1 = EntityStub.Create(1);
             ChildEntityStub e2 = ChildEntityStub.Create(1);
@@ -80,14 +86,14 @@ namespace Easy.NHibernate.UnitTests
         {
             EntityStub e = new EntityStub();
             int oldHash = e.GetHashCode();
-            e.Id = 100;
+            e.ChangeId(100);
             int newHash = e.GetHashCode();
 
             newHash.Should().Be(oldHash);
         }
 
         [Test]
-        public void Assert_transient_should_have_same_hash_code()
+        public void Assert_transient_should_have_not_same_hash_code()
         {
             EntityStub e1 = new EntityStub();
             EntityStub e2 = new EntityStub();

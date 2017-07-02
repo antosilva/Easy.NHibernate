@@ -7,7 +7,7 @@ using NHibernate.Criterion;
 
 namespace Easy.NHibernate.UnitTests.Repositories
 {
-    public class CustomersRepository : Repository<CustomerEntity>
+    internal class CustomersRepository : Repository<CustomerEntity>
     {
         public CustomersRepository(ISession session)
             : base(session)

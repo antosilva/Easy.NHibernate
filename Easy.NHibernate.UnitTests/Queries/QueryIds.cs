@@ -5,7 +5,7 @@ using Easy.NHibernate.Query.Interfaces;
 
 namespace Easy.NHibernate.UnitTests.Queries
 {
-    public class QueryIds : IQueryData<int>
+    internal class QueryIds : IQueryData<int>
     {
         public IEnumerable<int> Execute<TEntity>(IQueryable<TEntity> query) where TEntity : EntityBase<TEntity>
         {
