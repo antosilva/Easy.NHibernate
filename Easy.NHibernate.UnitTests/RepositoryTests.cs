@@ -43,6 +43,7 @@ namespace Easy.NHibernate.UnitTests
             //Configuration configuration = new SqliteConfiguration("Data Source=testDB.db;Version=3;");
 
             Configuration configuration = new InMemoryConfiguration();
+
             configuration.CurrentSessionContext<CallSessionContext>(); // Per call session context.
             configuration.DataBaseIntegration(di => { di.LogSqlInConsole = false; });
 
@@ -53,7 +54,6 @@ namespace Easy.NHibernate.UnitTests
             DataStore = new DataStore.DataStore(mappings, sessionManager, schemaExporter);
             DataStore.AddMappings(typeof(CustomerMapping));
             DataStore.CompileMappings();
-
             Schema = DataStore.ExportToDatabase();
 
             ObjectUnderTest = new Repository<CustomerEntity>(sessionManager.CurrentSession());

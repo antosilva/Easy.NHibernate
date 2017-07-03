@@ -26,7 +26,8 @@ namespace Easy.NHibernate.UnitTests.Repositories
 
         public IEnumerable<CustomerEntity> QueryCustomersWithNameLike(string nameLike)
         {
-            return GetAll(x => x.Name.IsLike(nameLike));
+            return QueryOver().Where(x => x.Name.IsLike(nameLike))
+                              .List();
         }
     }
 }

@@ -28,7 +28,6 @@ namespace Easy.NHibernate.Repository.Interfaces
         IEnumerable<T> GetAll();
         IEnumerable<T> GetAll(Expression<Func<T, bool>> criteria);
 
-        // For paging.
         IEnumerable<T> GetAllBetween(int startId, int endId);
     }
 }
