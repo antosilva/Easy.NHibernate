@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Easy.NHibernate.Configurations;
@@ -7,6 +8,7 @@ using Easy.NHibernate.Mappings;
 using Easy.NHibernate.Mappings.Interfaces;
 using Easy.NHibernate.Query;
 using Easy.NHibernate.Query.Interfaces;
+using Easy.NHibernate.Repository;
 using Easy.NHibernate.Schema;
 using Easy.NHibernate.Schema.Interfaces;
 using Easy.NHibernate.Session;
@@ -15,21 +17,23 @@ using Easy.NHibernate.UnitTests.Domain;
 using Easy.NHibernate.UnitTests.Mappings;
 using Easy.NHibernate.UnitTests.Queries;
 using Easy.NHibernate.UnitTests.Repositories;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Context;
 using NHibernate.Tool.hbm2ddl;
+using NUnit.Framework;
 
 namespace Easy.NHibernate.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     internal class Sandbox
     {
-        [TestMethod]
+        [Test]
         public void TestMethod1()
         {
-            //#region Comments
+            #region Comments
             ////Configuration sqlite = new SqliteConfiguration("Data Source=mydb.db;Version=3;");
             ////IModelMappings databaseSession = new ModelMappings(sqlite);
             ////databaseSession.AddMappings(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
@@ -55,71 +59,49 @@ namespace Easy.NHibernate.UnitTests
             ////return;
 
             ////PopulateData td = new PopulateData();
-            //#endregion
+            #endregion
 
-            ////Configuration cfg = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
-            //Configuration cfg = new InMemoryConfiguration();
-            ////cfg.Cache(cache =>
-            ////          {
-            ////              cache.UseQueryCache = true;
-            ////              cache.Provider<HashtableCacheProvider>();
-            ////              //cache.QueryCache<StandardQueryCache>(); // Buggy, see hereafter for second level query cache.
-            ////          });
-            ////cfg.SetProperty(Environment.UseSecondLevelCache, "true");
-            ////cfg.SetProperty(Environment.QueryCacheFactory, typeof(StandardQueryCacheFactory).FullName);
+            //Configuration cfg = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
 
-            //// Provides a CurrentSession in each thread using the ThreadStaticAttribute.
-            //cfg.CurrentSessionContext<ThreadStaticSessionContext>();
+            Configuration cfg = new InMemoryConfiguration();
 
-            //// Provides a CurrentSession in each HttpContext, works only with web apps.
-            ////cfg.CurrentSessionContext<WebSessionContext>();
+            //cfg.Cache(cache =>
+            //          {
+            //              cache.UseQueryCache = true;
+            //              cache.Provider<HashtableCacheProvider>();
+            //              //cache.QueryCache<StandardQueryCache>(); // Buggy, see hereafter for second level query cache.
+            //          });
+            //cfg.SetProperty(Environment.UseSecondLevelCache, "true");
+            //cfg.SetProperty(Environment.QueryCacheFactory, typeof(StandardQueryCacheFactory).FullName);
 
-            //// Provides a CurrentSession in each OperationContext in WCF, works only during the lifetime of a WCF operation.
-            ////cfg.CurrentSessionContext<WcfOperationSessionContext>();
+            IModelMappings modelMappings = new ModelMappings(cfg);
+            ISessionManager sessionManager = new SessionManager(cfg, SessionContextAffinity.CurrentThread);
+            SchemaExport schemaExporter = new SchemaExport(cfg);
 
-            //// Provides a CurrentSession in the CurrentDomain, works during the lifetime of the application.
-            ////cfg.CurrentSessionContext<CurrentDomainSessionContext>();
+            IDataStore dataStore = new DataStore.DataStore(modelMappings, sessionManager, schemaExporter);
+            dataStore.AddMappings(Assembly.GetAssembly(typeof(CustomerMapping)));
+            dataStore.CompileMappings();
+            dataStore.ExportToDatabase();
 
-            //IModelMappings modelMappings = new ModelMappings(cfg);
-            //ISessionManager sessionManager = new SessionManager(cfg);
-            //SchemaExport schemaExporter = new SchemaExport(cfg);
+            ISession session = dataStore.CurrentSession();
 
-            //IDataStore dataStore = new DataStore.DataStore(modelMappings, sessionManager, schemaExporter);
-            //dataStore.AddMappings(Assembly.GetAssembly(typeof(CustomerMapping)));
-            //dataStore.CompileMappings();
-            //dataStore.ExportToFile(@".\schema.sql");
-            //dataStore.ExportToConsole();
+            using (var uow = new UnitOfWork(session))
+            {
+                CustomersRepository repo = new CustomersRepository(session);
+                CustomerEntity newCustomer = new CustomerEntity
+                {
+                    Name = "TEST"
+                };
+                repo.Save(newCustomer);
+                uow.Commit();
+            }
 
-            //ISession session = dataStore.CurrentSession();
+            // Query API instead of Repository pattern.
+            IQueryRunner runner = new QueryRunner(session);
+            ListAllIds query = new ListAllIds();
+            IEnumerable<int> result = runner.Run(query);
 
-            //IQueryData<int> q = new QueryIds();
-            //IQueryRunner qr = new QueryRunner(session);
-            //var v = qr.Run<CustomerEntity, int>(q);
-
-            //CustomersRepository repo = new CustomersRepository(session);
-
-            //int n = repo.Count();
-            ////n = repo.Count(x => x.Name.StartsWith("D"));
-
-            //var vv = repo.GetAllBetween(0, 2);
-
-            //CustomerEntity customer = repo.QueryCustomer(30);
-            //IEnumerable<CustomerEntity> all = repo.QueryAllCustomers();
-            //IEnumerable<CustomerEntity> customers = repo.QueryCustomersWithNameLike("J%");
-
-            //customer = repo.GetById(60);
-            //var cs = repo.GetByIdIn(new List<int> {80, 81, 82, 3}).ToList();
-
-
-            ////using (var uow = new UnitOfWork(session))
-            ////{
-            ////    CustomerEntity newCustomer = new CustomerEntity
-            ////                                 {
-            ////                                     Name = "TEST"
-            ////                                 };
-            ////    repo.Save(newCustomer);
-            ////    uow.Commit();
-            ////}
+            result.Count().Should().Be(1);
         }
     }
 }

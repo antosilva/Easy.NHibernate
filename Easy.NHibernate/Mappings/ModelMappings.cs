@@ -23,21 +23,21 @@ namespace Easy.NHibernate.Mappings
         {
             IEnumerable<Type> types = AppDomain.CurrentDomain
                                                .GetAssemblies()
-                                               .SelectMany(t => t.GetExportedTypes())
+                                               .SelectMany(t => t.GetTypes())
                                                .Where(t => t.Namespace == exportingNamespace && t.IsClass);
             AddMappings(types);
         }
 
         public void AddMappings(Assembly exportingAssembly)
         {
-            IEnumerable<Type> exportedTypes = exportingAssembly.GetExportedTypes();
-            AddMappings(exportedTypes);
+            IEnumerable<Type> assemblyTypes = exportingAssembly.GetTypes();
+            AddMappings(assemblyTypes);
         }
 
         public void AddMappings(IEnumerable<Assembly> exportingAssemblies)
         {
-            IEnumerable<Type> exportedTypes = exportingAssemblies.SelectMany(a => a.GetExportedTypes());
-            AddMappings(exportedTypes);
+            IEnumerable<Type> assemblyTypes = exportingAssemblies.SelectMany(a => a.GetTypes());
+            AddMappings(assemblyTypes);
         }
 
         public void AddMappings(Type mappingType)

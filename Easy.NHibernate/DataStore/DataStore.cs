@@ -61,7 +61,9 @@ namespace Easy.NHibernate.DataStore
 
         public void ExportToFile(string fileName)
         {
-            _schemaExport?.SetOutputFile(fileName).Execute(false /*stdout*/, false /*execute*/, false /*just drop*/);
+            _schemaExport?.SetOutputFile(fileName).Execute(false /*stdout*/,
+                                                           false /*execute*/,
+                                                           false /*just drop*/);
         }
 
         public void ExportToConsole()
@@ -72,14 +74,21 @@ namespace Easy.NHibernate.DataStore
         public string ExportToDatabase()
         {
             StringWriter sw = new StringWriter();
-            _schemaExport?.Execute(false /*stdout*/, true /*execute*/, false /*just drop*/, _sessionManager.CurrentSession().Connection, sw);
+            _schemaExport?.Execute(false /*stdout*/,
+                                   true /*execute*/,
+                                   false /*just drop*/,
+                                   _sessionManager.CurrentSession().Connection,
+                                   sw);
             return sw.ToString();
         }
 
         public string ExportToString()
         {
             StringWriter sw = new StringWriter();
-            _schemaExport?.Execute(str => { }, true /*execute*/, false /*just drop*/, sw);
+            _schemaExport?.Execute(str => { },
+                                   true /*execute*/,
+                                   false /*just drop*/,
+                                   sw);
             return sw.ToString();
         }
 

@@ -15,7 +15,6 @@ using Easy.NHibernate.UnitTests.Mappings;
 using FluentAssertions;
 using NHibernate;
 using NHibernate.Cfg;
-using NHibernate.Context;
 using NHibernate.Criterion;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
@@ -43,12 +42,10 @@ namespace Easy.NHibernate.UnitTests
             //Configuration configuration = new SqliteConfiguration("Data Source=testDB.db;Version=3;");
 
             Configuration configuration = new InMemoryConfiguration();
-
-            configuration.CurrentSessionContext<CallSessionContext>(); // Per call session context.
             configuration.DataBaseIntegration(di => { di.LogSqlInConsole = false; });
 
             IModelMappings mappings = new ModelMappings(configuration);
-            ISessionManager sessionManager = new SessionManager(configuration);
+            ISessionManager sessionManager = new SessionManager(configuration, SessionContextAffinity.Local); // Local: works like a local variable.
             SchemaExport schemaExporter = new SchemaExport(configuration);
 
             DataStore = new DataStore.DataStore(mappings, sessionManager, schemaExporter);
@@ -56,21 +53,24 @@ namespace Easy.NHibernate.UnitTests
             DataStore.CompileMappings();
             Schema = DataStore.ExportToDatabase();
 
-            ObjectUnderTest = new Repository<CustomerEntity>(sessionManager.CurrentSession());
+            ObjectUnderTest = new Repository<CustomerEntity>(DataStore.CurrentSession());
+
+            Populate();
         }
 
         protected void Populate()
         {
-            ISession session = DataStore.CurrentSession();
-            using (IUnitOfWork uow = new UnitOfWork(session))
+            foreach (CustomerEntity customer in Customers)
             {
-                foreach (CustomerEntity customer in Customers)
-                {
-                    ObjectUnderTest.Save(customer);
-                }
-
-                uow.Commit();
+                ObjectUnderTest.Save(customer);
             }
+        }
+
+        public override void OneTimeTearDown()
+        {
+            // Cleanup our "local" session.
+            ISession session = DataStore.UnbindCurrentSession();
+            session.Dispose();
         }
     }
 
@@ -78,12 +78,6 @@ namespace Easy.NHibernate.UnitTests
     {
         protected int CountAll;
         protected int CountAllWithCriteria;
-
-        public override void Arrange()
-        {
-            base.Arrange();
-            Populate();
-        }
 
         public override void Act()
         {
@@ -113,7 +107,6 @@ namespace Easy.NHibernate.UnitTests
         public override void Arrange()
         {
             base.Arrange();
-            Populate();
             Ids = new[] {2, 3};
         }
 
@@ -141,12 +134,6 @@ namespace Easy.NHibernate.UnitTests
         protected IEnumerable<int> GetAllIds;
         protected IEnumerable<int> GetAllIdsByCriteria;
 
-        public override void Arrange()
-        {
-            base.Arrange();
-            Populate();
-        }
-
         public override void Act()
         {
             GetAllIds = ObjectUnderTest.GetAllIds();
@@ -171,12 +158,6 @@ namespace Easy.NHibernate.UnitTests
         protected IEnumerable<CustomerEntity> GetAllCustomers;
         protected IEnumerable<CustomerEntity> GetAllCustomersByCriteria;
 
-        public override void Arrange()
-        {
-            base.Arrange();
-            Populate();
-        }
-
         public override void Act()
         {
             GetAllCustomers = ObjectUnderTest.GetAll();
@@ -200,12 +181,6 @@ namespace Easy.NHibernate.UnitTests
     {
         protected IEnumerable<CustomerEntity> GetCustomersBetween;
 
-        public override void Arrange()
-        {
-            base.Arrange();
-            Populate();
-        }
-
         public override void Act()
         {
             GetCustomersBetween = ObjectUnderTest.GetAllBetween(2, 10);
@@ -223,12 +198,6 @@ namespace Easy.NHibernate.UnitTests
         protected int ModifiedCustomerId;
         protected CustomerEntity ModifiedCustomer;
         protected CustomerEntity CustomerRetrieved;
-
-        public override void Arrange()
-        {
-            base.Arrange();
-            Populate();
-        }
 
         public override void Act()
         {
