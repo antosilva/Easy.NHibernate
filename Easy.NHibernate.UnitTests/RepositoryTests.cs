@@ -11,6 +11,7 @@ using Easy.NHibernate.Session;
 using Easy.NHibernate.Session.Interfaces;
 using Easy.NHibernate.UnitTests.AAA;
 using Easy.NHibernate.UnitTests.Domain;
+using Easy.NHibernate.UnitTests.Logger;
 using Easy.NHibernate.UnitTests.Mappings;
 using FluentAssertions;
 using NHibernate;
@@ -23,6 +24,7 @@ namespace Easy.NHibernate.UnitTests
 {
     internal class RepositoryTests : ArrangeActAssert
     {
+        protected TestLogger Logger;
         protected IRepository<CustomerEntity> ObjectUnderTest;
         protected IDataStore DataStore;
         protected string Schema;
@@ -30,6 +32,9 @@ namespace Easy.NHibernate.UnitTests
 
         public override void Arrange()
         {
+            Logger = new TestLogger(@"logs\" + GetType() + ".log");
+            Logger.Log.InfoFormat("Stating Unit tests");
+
             Customers = new[]
                         {
                             new CustomerEntity {Name = "Joe", PaymentDate = DateTime.Today.AddDays(-5)},

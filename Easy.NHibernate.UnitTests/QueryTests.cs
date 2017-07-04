@@ -10,6 +10,7 @@ using Easy.NHibernate.Session;
 using Easy.NHibernate.Session.Interfaces;
 using Easy.NHibernate.UnitTests.AAA;
 using Easy.NHibernate.UnitTests.Domain;
+using Easy.NHibernate.UnitTests.Logger;
 using Easy.NHibernate.UnitTests.Mappings;
 using FluentAssertions;
 using NHibernate;
@@ -22,6 +23,7 @@ namespace Easy.NHibernate.UnitTests
 {
     internal class QueryTests : ArrangeActAssert
     {
+        protected TestLogger Logger;
         protected IDataStore DataStore;
         protected string Schema;
         protected CustomerEntity[] Customers;
@@ -29,6 +31,9 @@ namespace Easy.NHibernate.UnitTests
 
         public override void Arrange()
         {
+            Logger = new TestLogger(@"logs\" + GetType() + ".log");
+            Logger.Log.InfoFormat("Stating Unit tests");
+
             Customers = new[]
                         {
                             new CustomerEntity {Name = "Joe", PaymentDate = DateTime.Today.AddDays(-5)},
@@ -103,7 +108,7 @@ namespace Easy.NHibernate.UnitTests
 
             public int Run(IQueryOver<CustomerEntity, CustomerEntity> queryover)
             {
-                return queryover.Where(x => x.Name.IsLike(_likeName)).Select(x => x.Id).RowCount();
+                return queryover.Where(x => x.Name.IsLike(_likeName)).RowCount();
             }
         }
 
@@ -125,4 +130,30 @@ namespace Easy.NHibernate.UnitTests
             CountAllForNameLike.Should().Be(Customers.Count(x => x.Name.StartsWith("J")));
         }
     }
+
+    //internal class QueryTests_count_entities_with_Func : QueryTests
+    //{
+    //    protected int CountAll;
+    //    protected int CountAllForNameLike;
+
+    //    public override void Act()
+    //    {
+    //        CountAll = QueryRunner.Run<CustomerEntity, int>(x => x.RowCount());
+    //        CountAllForNameLike = QueryRunner.Run<CustomerEntity, int>(x => x.Where(e => e.Name.IsLike("J%")).RowCount());
+    //        CountAllForNameLike = DataStore.CurrentSession().QueryOver<CustomerEntity>().Where(e => e.Name.IsLike("J%")).RowCount();
+    //        CountAllForNameLike = QueryRunner.QueryOver<CustomerEntity>().Where(e => e.Name.IsLike("J%")).RowCount();
+    //    }
+
+    //    [Test]
+    //    public void Assert_Count_all_has_same_length_like_input_customers()
+    //    {
+    //        CountAll.Should().Be(Customers.Length);
+    //    }
+
+    //    [Test]
+    //    public void Assert_Count_with_criteria_matches_customers_filtered_with_same_criteria()
+    //    {
+    //        CountAllForNameLike.Should().Be(Customers.Count(x => x.Name.StartsWith("J")));
+    //    }
+    //}
 }
