@@ -19,7 +19,9 @@ namespace Easy.NHibernate.Session
     public class SessionManager : ISessionManager
     {
         private readonly SessionContextAffinity _sessionContextAffinity;
-        private readonly Lazy<ISessionFactory> _sessionFactory;
+        private Lazy<ISessionFactory> _sessionFactory;
+
+        public ISession CurrentSession => GetCurrentSession();
 
         public SessionManager(Configuration configuration)
             : this(configuration, SessionContextAffinity.CurrentThread)
@@ -54,7 +56,17 @@ namespace Easy.NHibernate.Session
             _sessionFactory = new Lazy<ISessionFactory>(configuration.BuildSessionFactory);
         }
 
-        public ISession CurrentSession()
+        public ISession UnbindCurrentSession()
+        {
+            if (_sessionContextAffinity == SessionContextAffinity.Local)
+            {
+                return ThreadLocalSessionContext.Unbind(_sessionFactory.Value);
+            }
+
+            return CurrentSessionContext.Unbind(_sessionFactory.Value);
+        }
+
+        private ISession GetCurrentSession()
         {
             if (_sessionContextAffinity == SessionContextAffinity.Local || CurrentSessionContext.HasBind(_sessionFactory.Value))
             {
@@ -66,14 +78,27 @@ namespace Easy.NHibernate.Session
             return session;
         }
 
-        public ISession UnbindCurrentSession()
+        private void Dispose(bool disposing)
         {
-            if (_sessionContextAffinity == SessionContextAffinity.Local)
+            if (disposing)
             {
-                return ThreadLocalSessionContext.Unbind(_sessionFactory.Value);
-            }
+                ISession session = UnbindCurrentSession();
+                session?.Dispose();
 
-            return CurrentSessionContext.Unbind(_sessionFactory.Value);
+                _sessionFactory.Value.Dispose();
+                _sessionFactory = null;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~SessionManager()
+        {
+            Dispose(false);
         }
     }
 }

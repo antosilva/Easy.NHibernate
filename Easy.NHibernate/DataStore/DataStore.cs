@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using Easy.NHibernate.DataStore.Interfaces;
 using Easy.NHibernate.Mappings.Interfaces;
 using Easy.NHibernate.Schema.Interfaces;
 using Easy.NHibernate.Session.Interfaces;
 using NHibernate;
-using NHibernate.Tool.hbm2ddl;
 
 namespace Easy.NHibernate.DataStore
 {
@@ -15,9 +13,11 @@ namespace Easy.NHibernate.DataStore
     {
         private IModelMappings _modelMappings;
         private ISessionManager _sessionManager;
-        private readonly SchemaExport _schemaExport;
+        private ISchemaExporter _schemaExport;
 
-        public DataStore(IModelMappings modelMappings, ISessionManager sessionManager, SchemaExport schemaExport)
+        public ISession CurrentSession => _sessionManager.CurrentSession;
+
+        public DataStore(IModelMappings modelMappings, ISessionManager sessionManager, ISchemaExporter schemaExport)
         {
             _modelMappings = modelMappings;
             _sessionManager = sessionManager;
@@ -61,40 +61,22 @@ namespace Easy.NHibernate.DataStore
 
         public void ExportToFile(string fileName)
         {
-            _schemaExport?.SetOutputFile(fileName).Execute(false /*stdout*/,
-                                                           false /*execute*/,
-                                                           false /*just drop*/);
+            _schemaExport?.ExportToFile(fileName);
         }
 
         public void ExportToConsole()
         {
-            _schemaExport?.Execute(true /*stdout*/, false /*execute*/, false /*just drop*/);
+            _schemaExport?.ExportToConsole();
         }
 
         public string ExportToDatabase()
         {
-            StringWriter sw = new StringWriter();
-            _schemaExport?.Execute(false /*stdout*/,
-                                   true /*execute*/,
-                                   false /*just drop*/,
-                                   _sessionManager.CurrentSession().Connection,
-                                   sw);
-            return sw.ToString();
+            return _schemaExport?.ExportToDatabase();
         }
 
         public string ExportToString()
         {
-            StringWriter sw = new StringWriter();
-            _schemaExport?.Execute(str => { },
-                                   true /*execute*/,
-                                   false /*just drop*/,
-                                   sw);
-            return sw.ToString();
-        }
-
-        public ISession CurrentSession()
-        {
-            return _sessionManager.CurrentSession();
+            return _schemaExport?.ExportToString();
         }
 
         public ISession UnbindCurrentSession()
@@ -112,11 +94,10 @@ namespace Easy.NHibernate.DataStore
         {
             if (disposing)
             {
-                ISession currentSession = _sessionManager?.UnbindCurrentSession();
-                currentSession?.Dispose();
-
-                _modelMappings = null;
+                _sessionManager?.Dispose();
                 _sessionManager = null;
+                _modelMappings = null;
+                _schemaExport = null;
             }
         }
 

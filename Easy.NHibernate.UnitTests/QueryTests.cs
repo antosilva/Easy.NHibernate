@@ -6,6 +6,8 @@ using Easy.NHibernate.Mappings;
 using Easy.NHibernate.Mappings.Interfaces;
 using Easy.NHibernate.Query;
 using Easy.NHibernate.Query.Interfaces;
+using Easy.NHibernate.Schema;
+using Easy.NHibernate.Schema.Interfaces;
 using Easy.NHibernate.Session;
 using Easy.NHibernate.Session.Interfaces;
 using Easy.NHibernate.UnitTests.AAA;
@@ -16,7 +18,6 @@ using FluentAssertions;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Criterion;
-using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 
 namespace Easy.NHibernate.UnitTests
@@ -47,21 +48,21 @@ namespace Easy.NHibernate.UnitTests
 
             IModelMappings mappings = new ModelMappings(configuration);
             ISessionManager sessionManager = new SessionManager(configuration, SessionContextAffinity.Local);
-            SchemaExport schemaExporter = new SchemaExport(configuration);
+            ISchemaExporter schemaExporter = new SchemaExporter(configuration, sessionManager);
 
             DataStore = new DataStore.DataStore(mappings, sessionManager, schemaExporter);
             DataStore.AddMappings(typeof(CustomerMapping));
             DataStore.CompileMappings();
             Schema = DataStore.ExportToDatabase();
 
-            QueryRunner = new QueryRunner(DataStore.CurrentSession());
+            QueryRunner = new QueryRunner(DataStore.CurrentSession);
 
             Populate();
         }
 
         protected void Populate()
         {
-            ISession session = DataStore.CurrentSession();
+            ISession session = DataStore.CurrentSession;
             foreach (CustomerEntity customer in Customers)
             {
                 session.Save(customer);
@@ -78,7 +79,7 @@ namespace Easy.NHibernate.UnitTests
         [Test]
         public void Assert_all_instances_have_been_saved()
         {
-            ISession session = DataStore.CurrentSession();
+            ISession session = DataStore.CurrentSession;
             int count = session.QueryOver<CustomerEntity>().List().Count;
             count.Should().Be(Customers.Length);
         }

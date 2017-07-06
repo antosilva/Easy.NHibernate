@@ -1,10 +1,12 @@
-﻿using NHibernate;
+﻿using System;
+using NHibernate;
 
 namespace Easy.NHibernate.Session.Interfaces
 {
-    public interface ISessionManager
+    public interface ISessionManager : IDisposable
     {
-        ISession CurrentSession();
+        ISession CurrentSession { get; }
+
         ISession UnbindCurrentSession();
     }
 }

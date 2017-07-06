@@ -7,6 +7,8 @@ using Easy.NHibernate.Mappings;
 using Easy.NHibernate.Mappings.Interfaces;
 using Easy.NHibernate.Repository;
 using Easy.NHibernate.Repository.Interfaces;
+using Easy.NHibernate.Schema;
+using Easy.NHibernate.Schema.Interfaces;
 using Easy.NHibernate.Session;
 using Easy.NHibernate.Session.Interfaces;
 using Easy.NHibernate.UnitTests.AAA;
@@ -51,14 +53,14 @@ namespace Easy.NHibernate.UnitTests
 
             IModelMappings mappings = new ModelMappings(configuration);
             ISessionManager sessionManager = new SessionManager(configuration, SessionContextAffinity.Local); // Local: works like a local variable.
-            SchemaExport schemaExporter = new SchemaExport(configuration);
+            ISchemaExporter schemaExporter = new SchemaExporter(configuration, sessionManager);
 
             DataStore = new DataStore.DataStore(mappings, sessionManager, schemaExporter);
             DataStore.AddMappings(typeof(CustomerMapping));
             DataStore.CompileMappings();
             Schema = DataStore.ExportToDatabase();
 
-            ObjectUnderTest = new Repository<CustomerEntity>(DataStore.CurrentSession());
+            ObjectUnderTest = new Repository<CustomerEntity>(DataStore.CurrentSession);
 
             Populate();
         }
@@ -209,7 +211,7 @@ namespace Easy.NHibernate.UnitTests
             ModifiedCustomer = Customers.First();
             ModifiedCustomerId = ModifiedCustomer.Id;
 
-            ISession session = DataStore.CurrentSession();
+            ISession session = DataStore.CurrentSession;
             using (IUnitOfWork uow = new UnitOfWork(session))
             {
                 ModifiedCustomer.PaymentDate = DateTime.Today.AddDays(-100);
@@ -219,7 +221,7 @@ namespace Easy.NHibernate.UnitTests
 
             ModifiedCustomer.PaymentDate = DateTime.Today;
 
-            session = DataStore.CurrentSession();
+            session = DataStore.CurrentSession;
             using (IUnitOfWork uow = new UnitOfWork(session))
             {
                 CustomerRetrieved = ObjectUnderTest.GetById(ModifiedCustomerId);

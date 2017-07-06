@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Easy.NHibernate.Configurations;
@@ -18,10 +17,8 @@ using Easy.NHibernate.UnitTests.Mappings;
 using Easy.NHibernate.UnitTests.Queries;
 using Easy.NHibernate.UnitTests.Repositories;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NHibernate;
 using NHibernate.Cfg;
-using NHibernate.Context;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 
@@ -76,14 +73,14 @@ namespace Easy.NHibernate.UnitTests
 
             IModelMappings modelMappings = new ModelMappings(cfg);
             ISessionManager sessionManager = new SessionManager(cfg, SessionContextAffinity.CurrentThread);
-            SchemaExport schemaExporter = new SchemaExport(cfg);
+            ISchemaExporter schemaExporter = new SchemaExporter(cfg, sessionManager);
 
             IDataStore dataStore = new DataStore.DataStore(modelMappings, sessionManager, schemaExporter);
             dataStore.AddMappings(Assembly.GetAssembly(typeof(CustomerMapping)));
             dataStore.CompileMappings();
             dataStore.ExportToDatabase();
 
-            ISession session = dataStore.CurrentSession();
+            ISession session = dataStore.CurrentSession;
 
             using (var uow = new UnitOfWork(session))
             {
