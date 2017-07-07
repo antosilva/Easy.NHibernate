@@ -70,8 +70,6 @@
     <Compile Include="Drivers\Sybase\SybaseAdoNet4AseDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\SchemaExporter.cs" />
-    <Compile Include="Session\CurrentThreadSessionContext.cs" />
-    <Compile Include="Session\CurrentDomainSessionContext.cs" />
     <Compile Include="Session\Interfaces\ISessionManager.cs" />
     <Compile Include="Session\SessionManager.cs" />
     <Compile Include="DataStore\DataStore.cs" />

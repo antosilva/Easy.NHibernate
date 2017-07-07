@@ -1,6 +1,4 @@
-﻿using System;
-using Easy.NHibernate.Domain;
-using NHibernate;
+﻿using Easy.NHibernate.Domain;
 
 namespace Easy.NHibernate.Query.Interfaces
 {

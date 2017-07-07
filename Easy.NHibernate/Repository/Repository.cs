@@ -18,16 +18,16 @@ namespace Easy.NHibernate.Repository
             _session = session;
         }
 
-        public void Save(T entity)
+        public void SaveOrUpdate(T entity)
         {
             _session.SaveOrUpdate(entity);
         }
 
-        public void Save(IEnumerable<T> entities)
+        public void SaveOrUpdate(IEnumerable<T> entities)
         {
             foreach (T entity in entities.ToArray())
             {
-                Save(entity);
+                SaveOrUpdate(entity);
             }
         }
 
@@ -86,14 +86,6 @@ namespace Easy.NHibernate.Repository
                               .OrderBy(x => x.Id).Asc
                               .List();
         }
-
-        //public IEnumerable<T> GetAllBetween(Expression<Func<T, bool>> criteria, int startId, int endId)
-        //{
-        //    return QueryOver().Where(criteria)
-        //                      .And(x => x.Id.IsBetween(startId).And(endId))
-        //                      .OrderBy(x => x.Id).Asc
-        //                      .List();
-        //}
 
         public IEnumerable<T> GetAll()
         {

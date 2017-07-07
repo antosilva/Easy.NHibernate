@@ -8,23 +8,23 @@ namespace Easy.NHibernate.Session
 {
     public enum SessionContextAffinity
     {
-        CurrentThread,
-        Local,
-        PerCall,
+        Threadlocal,
+        ThreadStatic,
+        Call,
         WcfOperation,
-        WebSession,
-        CurrentDomain
+        Web
     }
 
     public class SessionManager : ISessionManager
     {
         private readonly SessionContextAffinity _sessionContextAffinity;
         private Lazy<ISessionFactory> _sessionFactory;
+        protected bool _disposed;
 
         public ISession CurrentSession => GetCurrentSession();
 
         public SessionManager(Configuration configuration)
-            : this(configuration, SessionContextAffinity.CurrentThread)
+            : this(configuration, SessionContextAffinity.ThreadStatic)
         {
         }
 
@@ -33,23 +33,20 @@ namespace Easy.NHibernate.Session
             _sessionContextAffinity = sessionContextAffinity;
             switch (_sessionContextAffinity)
             {
-                case SessionContextAffinity.Local:
+                case SessionContextAffinity.Threadlocal:
                     configuration.CurrentSessionContext<ThreadLocalSessionContext>();
                     break;
-                case SessionContextAffinity.CurrentThread:
-                    configuration.CurrentSessionContext<CurrentThreadSessionContext>();
+                case SessionContextAffinity.ThreadStatic:
+                    configuration.CurrentSessionContext<ThreadStaticSessionContext>();
                     break;
-                case SessionContextAffinity.PerCall:
+                case SessionContextAffinity.Call:
                     configuration.CurrentSessionContext<CallSessionContext>();
                     break;
                 case SessionContextAffinity.WcfOperation:
                     configuration.CurrentSessionContext<WcfOperationSessionContext>();
                     break;
-                case SessionContextAffinity.WebSession:
+                case SessionContextAffinity.Web:
                     configuration.CurrentSessionContext<WebSessionContext>();
-                    break;
-                case SessionContextAffinity.CurrentDomain:
-                    configuration.CurrentSessionContext<CurrentDomainSessionContext>();
                     break;
             }
 
@@ -58,7 +55,7 @@ namespace Easy.NHibernate.Session
 
         public ISession UnbindCurrentSession()
         {
-            if (_sessionContextAffinity == SessionContextAffinity.Local)
+            if (_sessionContextAffinity == SessionContextAffinity.Threadlocal)
             {
                 return ThreadLocalSessionContext.Unbind(_sessionFactory.Value);
             }
@@ -68,7 +65,7 @@ namespace Easy.NHibernate.Session
 
         private ISession GetCurrentSession()
         {
-            if (_sessionContextAffinity == SessionContextAffinity.Local || CurrentSessionContext.HasBind(_sessionFactory.Value))
+            if (_sessionContextAffinity == SessionContextAffinity.Threadlocal || CurrentSessionContext.HasBind(_sessionFactory.Value))
             {
                 return _sessionFactory.Value.GetCurrentSession();
             }
@@ -80,14 +77,23 @@ namespace Easy.NHibernate.Session
 
         private void Dispose(bool disposing)
         {
+            if (_disposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
-                ISession session = UnbindCurrentSession();
-                session?.Dispose();
-
-                _sessionFactory.Value.Dispose();
+                if (_sessionFactory.IsValueCreated)
+                {
+                    ISession session = UnbindCurrentSession();
+                    session?.Dispose();
+                    _sessionFactory.Value.Dispose();
+                }
                 _sessionFactory = null;
             }
+
+            _disposed = true;
         }
 
         public void Dispose()

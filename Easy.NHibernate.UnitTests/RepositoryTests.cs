@@ -52,7 +52,7 @@ namespace Easy.NHibernate.UnitTests
             configuration.DataBaseIntegration(di => { di.LogSqlInConsole = false; });
 
             IModelMappings mappings = new ModelMappings(configuration);
-            ISessionManager sessionManager = new SessionManager(configuration, SessionContextAffinity.Local); // Local: works like a local variable.
+            ISessionManager sessionManager = new SessionManager(configuration, SessionContextAffinity.Threadlocal); // Threadlocal: works like a local variable.
             ISchemaExporter schemaExporter = new SchemaExporter(configuration, sessionManager);
 
             DataStore = new DataStore.DataStore(mappings, sessionManager, schemaExporter);
@@ -69,7 +69,7 @@ namespace Easy.NHibernate.UnitTests
         {
             foreach (CustomerEntity customer in Customers)
             {
-                ObjectUnderTest.Save(customer);
+                ObjectUnderTest.SaveOrUpdate(customer);
             }
         }
 

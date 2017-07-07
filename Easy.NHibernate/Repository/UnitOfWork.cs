@@ -8,6 +8,7 @@ namespace Easy.NHibernate.Repository
     public class UnitOfWork : IUnitOfWork
     {
         private ITransaction _transaction;
+        protected bool _disposed;
 
         public UnitOfWork(ISession session)
         {
@@ -43,11 +44,17 @@ namespace Easy.NHibernate.Repository
 
         protected void Dispose(bool disposing)
         {
+            if (_disposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
                 Rollback();
                 _transaction?.Dispose();
                 _transaction = null;
+                _disposed = true;
             }
         }
 

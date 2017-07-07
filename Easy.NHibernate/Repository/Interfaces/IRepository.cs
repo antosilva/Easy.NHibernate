@@ -7,8 +7,8 @@ namespace Easy.NHibernate.Repository.Interfaces
 {
     public interface IRepository<T> where T : class, IEntity
     {
-        void Save(T entity);
-        void Save(IEnumerable<T> entities);
+        void SaveOrUpdate(T entity);
+        void SaveOrUpdate(IEnumerable<T> entities);
 
         void Update(T entity);
         void Update(IEnumerable<T> entities);

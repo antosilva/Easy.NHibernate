@@ -34,10 +34,10 @@ namespace Easy.NHibernate.Schema
         public string ExportToString()
         {
             StringWriter sw = new StringWriter();
-            _schemaExport?.Execute(str => { },
-                                   true /*execute*/,
-                                   false /*just drop*/,
-                                   sw);
+            _schemaExport.Execute(str => { },
+                                  false /*execute*/,
+                                  false /*just drop*/,
+                                  sw);
             return sw.ToString();
         }
 

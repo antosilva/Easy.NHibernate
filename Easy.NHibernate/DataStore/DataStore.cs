@@ -14,6 +14,7 @@ namespace Easy.NHibernate.DataStore
         private IModelMappings _modelMappings;
         private ISessionManager _sessionManager;
         private ISchemaExporter _schemaExport;
+        protected bool _disposed;
 
         public ISession CurrentSession => _sessionManager.CurrentSession;
 
@@ -92,6 +93,11 @@ namespace Easy.NHibernate.DataStore
 
         protected void Dispose(bool disposing)
         {
+            if (_disposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
                 _sessionManager?.Dispose();
@@ -99,6 +105,8 @@ namespace Easy.NHibernate.DataStore
                 _modelMappings = null;
                 _schemaExport = null;
             }
+
+            _disposed = true;
         }
 
         ~DataStore()

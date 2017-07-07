@@ -19,17 +19,5 @@ namespace Easy.NHibernate.Query
             IQueryOver<TEntity, TEntity> queryOver = _session.QueryOver<TEntity>();
             return query.Run(queryOver);
         }
-
-        public TResult Run<TEntity, TResult>(Func<IQueryOver<TEntity, TEntity>, TResult> query) where TEntity : EntityBase<TEntity>
-        {
-            IQueryOver<TEntity, TEntity> queryOver = _session.QueryOver<TEntity>();
-            return query(queryOver);
-        }
-
-        public IQueryOver<TEntity, TEntity> QueryOver<TEntity>() where TEntity : EntityBase<TEntity>
-        {
-            IQueryOver<TEntity, TEntity> queryOver = _session.QueryOver<TEntity>();
-            return queryOver;
-        }
     }
 }

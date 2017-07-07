@@ -72,7 +72,7 @@ namespace Easy.NHibernate.UnitTests
             //cfg.SetProperty(Environment.QueryCacheFactory, typeof(StandardQueryCacheFactory).FullName);
 
             IModelMappings modelMappings = new ModelMappings(cfg);
-            ISessionManager sessionManager = new SessionManager(cfg, SessionContextAffinity.CurrentThread);
+            ISessionManager sessionManager = new SessionManager(cfg, SessionContextAffinity.ThreadStatic);
             ISchemaExporter schemaExporter = new SchemaExporter(cfg, sessionManager);
 
             IDataStore dataStore = new DataStore.DataStore(modelMappings, sessionManager, schemaExporter);
@@ -89,7 +89,7 @@ namespace Easy.NHibernate.UnitTests
                 {
                     Name = "TEST"
                 };
-                repo.Save(newCustomer);
+                repo.SaveOrUpdate(newCustomer);
                 uow.Commit();
             }
 
