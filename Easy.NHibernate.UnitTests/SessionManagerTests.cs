@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Easy.NHibernate.Config;
-using Easy.NHibernate.DataStore.Interfaces;
 using Easy.NHibernate.Mapping;
 using Easy.NHibernate.Mapping.Interfaces;
-using Easy.NHibernate.Repository.Interfaces;
-using Easy.NHibernate.Schema;
-using Easy.NHibernate.Schema.Interfaces;
 using Easy.NHibernate.Session;
 using Easy.NHibernate.Session.Interfaces;
 using Easy.NHibernate.UnitTests.AAA;
-using Easy.NHibernate.UnitTests.Domain;
 using Easy.NHibernate.UnitTests.Logger;
 using Easy.NHibernate.UnitTests.Mappings;
+using FluentAssertions;
+using NHibernate;
 using NHibernate.Cfg;
+using NUnit.Framework;
 
 namespace Easy.NHibernate.UnitTests
 {
     internal class SessionManagerTests : ArrangeActAssert
     {
         protected TestLogger Logger;
-        protected SessionManager ObjectUnderTest;
         protected Configuration Configuration;
+        protected IList<int> HashCodes;
+        protected ISessionManager ObjectUnderTest1;
+        protected ISessionManager ObjectUnderTest2;
 
         public override void Arrange()
         {
@@ -37,17 +37,76 @@ namespace Easy.NHibernate.UnitTests
             IModelMappings mappings = new ModelMappings(Configuration);
             mappings.AddMappings(typeof(CustomerMapping));
             mappings.CompileMappings();
+
+            HashCodes = new List<int>();
+
+            InitManagers();
+        }
+
+        public override void Act()
+        {
+            Action action = () =>
+                            {
+                                ISession session1 = ObjectUnderTest1.CurrentSession;
+                                HashCodes.Add(session1.GetHashCode());
+                                ISession session2 = ObjectUnderTest2.CurrentSession;
+                                HashCodes.Add(session2.GetHashCode());
+                            };
+
+            Parallel.Invoke(action, action, action, action);
+            while (HashCodes.Count != 8)
+            {
+                Thread.Sleep(100);
+            }
+        }
+
+        protected virtual void InitManagers()
+        {
+        }
+    }
+
+    internal class SessionManagerTests_per_call_session : SessionManagerTests
+    {
+        protected override void InitManagers()
+        {
+            ObjectUnderTest1 = new SessionManager(Configuration, SessionContextAffinity.Call);
+            ObjectUnderTest2 = new SessionManager(Configuration, SessionContextAffinity.Call);
+        }
+
+        [Test]
+        public void Assert_should_creates_one_session_for_each_call()
+        {
+            HashCodes.Distinct().Count().Should().Be(8);
         }
     }
 
     internal class SessionManagerTests_thread_local : SessionManagerTests
     {
-        public override void Arrange()
+        protected override void InitManagers()
         {
-            base.Arrange();
-            ObjectUnderTest = new SessionManager(Configuration, SessionContextAffinity.Threadlocal);
+            ObjectUnderTest1 = new SessionManager(Configuration, SessionContextAffinity.ThreadLocal);
+            ObjectUnderTest2 = new SessionManager(Configuration, SessionContextAffinity.ThreadLocal);
         }
 
-        // TODO: to be continued
+        [Test]
+        public void Assert_should_creates_one_session_for_each_call()
+        {
+            HashCodes.Distinct().Count().Should().Be(8);
+        }
+    }
+
+    internal class SessionManagerTests_thread_static : SessionManagerTests
+    {
+        protected override void InitManagers()
+        {
+            ObjectUnderTest1 = new SessionManager(Configuration, SessionContextAffinity.ThreadStatic);
+            ObjectUnderTest2 = new SessionManager(Configuration, SessionContextAffinity.ThreadStatic);
+        }
+
+        [Test]
+        public void Assert_should_create_one_session_per_thread()
+        {
+            HashCodes.Distinct().Count().Should().Be(4);
+        }
     }
 }

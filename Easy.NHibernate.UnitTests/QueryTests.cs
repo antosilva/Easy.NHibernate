@@ -47,7 +47,7 @@ namespace Easy.NHibernate.UnitTests
             configuration.DataBaseIntegration(di => { di.LogSqlInConsole = false; });
 
             IModelMappings mappings = new ModelMappings(configuration);
-            ISessionManager sessionManager = new SessionManager(configuration, SessionContextAffinity.Threadlocal);
+            ISessionManager sessionManager = new SessionManager(configuration, SessionContextAffinity.ThreadLocal);
             ISchemaExporter schemaExporter = new SchemaExporter(configuration, sessionManager);
 
             DataStore = new DataStore.DataStore(mappings, sessionManager, schemaExporter);

@@ -8,11 +8,11 @@ namespace Easy.NHibernate.Session
 {
     public enum SessionContextAffinity
     {
-        Threadlocal,
-        ThreadStatic,
-        Call,
-        WcfOperation,
-        Web
+        ThreadLocal,    // One session per call.
+        ThreadStatic,   // One session per thread.
+        Call,           // One session per CallContext in remoting.
+        WcfOperation,   // One session per OperationContext in wcf.
+        Web             // One session per HttpContext, for web apps only.
     }
 
     public class SessionManager : ISessionManager
@@ -33,7 +33,7 @@ namespace Easy.NHibernate.Session
             _sessionContextAffinity = sessionContextAffinity;
             switch (_sessionContextAffinity)
             {
-                case SessionContextAffinity.Threadlocal:
+                case SessionContextAffinity.ThreadLocal:
                     configuration.CurrentSessionContext<ThreadLocalSessionContext>();
                     break;
                 case SessionContextAffinity.ThreadStatic:
@@ -55,7 +55,7 @@ namespace Easy.NHibernate.Session
 
         public ISession UnbindCurrentSession()
         {
-            if (_sessionContextAffinity == SessionContextAffinity.Threadlocal)
+            if (_sessionContextAffinity == SessionContextAffinity.ThreadLocal)
             {
                 return ThreadLocalSessionContext.Unbind(_sessionFactory.Value);
             }
@@ -65,7 +65,7 @@ namespace Easy.NHibernate.Session
 
         private ISession GetCurrentSession()
         {
-            if (_sessionContextAffinity == SessionContextAffinity.Threadlocal || CurrentSessionContext.HasBind(_sessionFactory.Value))
+            if (_sessionContextAffinity == SessionContextAffinity.ThreadLocal || CurrentSessionContext.HasBind(_sessionFactory.Value))
             {
                 return _sessionFactory.Value.GetCurrentSession();
             }
