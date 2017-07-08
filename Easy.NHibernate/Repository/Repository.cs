@@ -18,42 +18,29 @@ namespace Easy.NHibernate.Repository
             _session = session;
         }
 
-        public void SaveOrUpdate(T entity)
+        public void Add(T entity)
         {
-            _session.SaveOrUpdate(entity);
+            _session.Save(entity);
         }
 
-        public void SaveOrUpdate(IEnumerable<T> entities)
-        {
-            foreach (T entity in entities.ToArray())
-            {
-                SaveOrUpdate(entity);
-            }
-        }
-
-        public void Update(T entity)
-        {
-            _session.Merge(entity);
-        }
-
-        public void Update(IEnumerable<T> entities)
+        public void Add(IEnumerable<T> entities)
         {
             foreach (T entity in entities.ToArray())
             {
-                Update(entity);
+                Add(entity);
             }
         }
 
-        public void Delete(T entity)
+        public void Remove(T entity)
         {
             _session.Delete(entity);
         }
 
-        public void Delete(IEnumerable<T> entities)
+        public void Remove(IEnumerable<T> entities)
         {
             foreach (T entity in entities.ToArray())
             {
-                Delete(entity);
+                Remove(entity);
             }
         }
 
@@ -80,7 +67,7 @@ namespace Easy.NHibernate.Repository
                               .RowCount();
         }
 
-        public IEnumerable<T> GetAllBetween(int startId, int endId)
+        public IEnumerable<T> GetByIdBetween(int startId, int endId)
         {
             return QueryOver().Where(x => x.Id.IsBetween(startId).And(endId))
                               .OrderBy(x => x.Id).Asc

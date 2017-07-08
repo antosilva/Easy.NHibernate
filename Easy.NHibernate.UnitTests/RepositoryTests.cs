@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Easy.NHibernate.Configurations;
+using Easy.NHibernate.Config;
 using Easy.NHibernate.DataStore.Interfaces;
-using Easy.NHibernate.Mappings;
-using Easy.NHibernate.Mappings.Interfaces;
+using Easy.NHibernate.Mapping;
+using Easy.NHibernate.Mapping.Interfaces;
 using Easy.NHibernate.Repository;
 using Easy.NHibernate.Repository.Interfaces;
 using Easy.NHibernate.Schema;
@@ -69,7 +69,7 @@ namespace Easy.NHibernate.UnitTests
         {
             foreach (CustomerEntity customer in Customers)
             {
-                ObjectUnderTest.SaveOrUpdate(customer);
+                ObjectUnderTest.Add(customer);
             }
         }
 
@@ -190,7 +190,7 @@ namespace Easy.NHibernate.UnitTests
 
         public override void Act()
         {
-            GetCustomersBetween = ObjectUnderTest.GetAllBetween(2, 10);
+            GetCustomersBetween = ObjectUnderTest.GetByIdBetween(2, 10);
         }
 
         [Test]
@@ -214,9 +214,9 @@ namespace Easy.NHibernate.UnitTests
             ISession session = DataStore.CurrentSession;
             using (IUnitOfWork uow = new UnitOfWork(session))
             {
-                ModifiedCustomer.PaymentDate = DateTime.Today.AddDays(-100);
-                ObjectUnderTest.Update(ModifiedCustomer);
-                uow.Commit();
+                ModifiedCustomer = Customers.First();
+                ModifiedCustomer.PaymentDate = DateTime.Today.AddDays(-2);
+                uow.Complete();
             }
 
             ModifiedCustomer.PaymentDate = DateTime.Today;
@@ -225,14 +225,14 @@ namespace Easy.NHibernate.UnitTests
             using (IUnitOfWork uow = new UnitOfWork(session))
             {
                 CustomerRetrieved = ObjectUnderTest.GetById(ModifiedCustomerId);
-                uow.Commit();
+                uow.Complete();
             }
         }
 
         [Test]
         public void Assert_the_update_has_been_saved_and_retrieved()
         {
-            var e = new CustomerEntity {Name = ModifiedCustomer.Name, PaymentDate = DateTime.Now.Date.AddDays(-100)};
+            var e = new CustomerEntity { Name = ModifiedCustomer.Name, PaymentDate = DateTime.Now.Date.AddDays(-100) };
             e.ChangeId(ModifiedCustomerId);
             CustomerRetrieved.Should().Be(e);
         }

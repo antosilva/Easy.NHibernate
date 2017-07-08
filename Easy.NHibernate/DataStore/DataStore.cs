@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Easy.NHibernate.DataStore.Interfaces;
-using Easy.NHibernate.Mappings.Interfaces;
+using Easy.NHibernate.Mapping.Interfaces;
 using Easy.NHibernate.Schema.Interfaces;
 using Easy.NHibernate.Session.Interfaces;
 using NHibernate;

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Easy.NHibernate.Configurations;
+using Easy.NHibernate.Config;
 using Easy.NHibernate.DataStore.Interfaces;
-using Easy.NHibernate.Mappings;
-using Easy.NHibernate.Mappings.Interfaces;
+using Easy.NHibernate.Mapping;
+using Easy.NHibernate.Mapping.Interfaces;
 using Easy.NHibernate.Query;
 using Easy.NHibernate.Query.Interfaces;
 using Easy.NHibernate.Repository;
@@ -89,8 +89,8 @@ namespace Easy.NHibernate.UnitTests
                 {
                     Name = "TEST"
                 };
-                repo.SaveOrUpdate(newCustomer);
-                uow.Commit();
+                repo.Add(newCustomer);
+                uow.Complete();
             }
 
             // Query API instead of Repository pattern.

@@ -4,7 +4,7 @@ using NHibernate.Cfg;
 using NHibernate.Dialect;
 using NHibernate.Driver;
 
-namespace Easy.NHibernate.Configurations
+namespace Easy.NHibernate.Config
 {
     public class InMemoryConfiguration : Configuration
     {

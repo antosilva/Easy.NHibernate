@@ -7,27 +7,23 @@ namespace Easy.NHibernate.Repository.Interfaces
 {
     public interface IRepository<T> where T : class, IEntity
     {
-        void SaveOrUpdate(T entity);
-        void SaveOrUpdate(IEnumerable<T> entities);
+        void Add(T entity);
+        void Add(IEnumerable<T> entities);
 
-        void Update(T entity);
-        void Update(IEnumerable<T> entities);
+        void Remove(T entity);
+        void Remove(IEnumerable<T> entities);
 
-        void Delete(T entity);
-        void Delete(IEnumerable<T> entities);
+        IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll(Expression<Func<T, bool>> criteria);
 
         T GetById(int id);
         IEnumerable<T> GetByIdIn(IEnumerable<int> ids);
+        IEnumerable<T> GetByIdBetween(int startId, int endId);
 
         IEnumerable<int> GetAllIds();
         IEnumerable<int> GetAllIds(Expression<Func<T, bool>> criteria);
 
         int Count();
         int Count(Expression<Func<T, bool>> criteria);
-
-        IEnumerable<T> GetAll();
-        IEnumerable<T> GetAll(Expression<Func<T, bool>> criteria);
-
-        IEnumerable<T> GetAllBetween(int startId, int endId);
     }
 }

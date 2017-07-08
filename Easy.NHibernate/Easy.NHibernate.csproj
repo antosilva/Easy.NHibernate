@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configurations\InMemoryConfiguration.cs" />
+    <Compile Include="Config\InMemoryConfiguration.cs" />
     <Compile Include="Domain\EntityBase.cs" />
     <Compile Include="Domain\Interfaces\IEntity.cs" />
     <Compile Include="Query\Interfaces\IQuery.cs" />
@@ -61,11 +61,11 @@
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
     <Compile Include="Schema\Interfaces\ISchemaExporter.cs" />
-    <Compile Include="Mappings\Interfaces\IModelMappings.cs" />
-    <Compile Include="Mappings\ModelMappings.cs" />
-    <Compile Include="Configurations\MsSqlConfiguration.cs" />
-    <Compile Include="Configurations\SqliteConfiguration.cs" />
-    <Compile Include="Configurations\SybaseAseConfiguration.cs" />
+    <Compile Include="Mapping\Interfaces\IModelMappings.cs" />
+    <Compile Include="Mapping\ModelMappings.cs" />
+    <Compile Include="Config\MsSqlConfiguration.cs" />
+    <Compile Include="Config\SqliteConfiguration.cs" />
+    <Compile Include="Config\SybaseAseConfiguration.cs" />
     <Compile Include="Drivers\Sybase\SybaseAdoNet45AseDriver.cs" />
     <Compile Include="Drivers\Sybase\SybaseAdoNet4AseDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

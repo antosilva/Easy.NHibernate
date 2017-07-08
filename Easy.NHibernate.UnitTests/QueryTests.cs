@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Easy.NHibernate.Configurations;
+using Easy.NHibernate.Config;
 using Easy.NHibernate.DataStore.Interfaces;
-using Easy.NHibernate.Mappings;
-using Easy.NHibernate.Mappings.Interfaces;
+using Easy.NHibernate.Mapping;
+using Easy.NHibernate.Mapping.Interfaces;
 using Easy.NHibernate.Query;
 using Easy.NHibernate.Query.Interfaces;
 using Easy.NHibernate.Schema;

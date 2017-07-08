@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Easy.NHibernate.Mappings.Interfaces
+namespace Easy.NHibernate.Mapping.Interfaces
 {
     public interface IModelMappings
     {

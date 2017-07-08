@@ -3,17 +3,17 @@ using NHibernate.Cfg;
 using NHibernate.Dialect;
 using NHibernate.Driver;
 
-namespace Easy.NHibernate.Configurations
+namespace Easy.NHibernate.Config
 {
-    public class SqliteConfiguration : Configuration
+    public class MsSqlConfiguration : Configuration
     {
-        public SqliteConfiguration(string connectionString)
+        public MsSqlConfiguration(string connectionString)
         {
             this.DataBaseIntegration(di =>
                                      {
                                          di.ConnectionString = connectionString;
-                                         di.Dialect<SQLiteDialect>();
-                                         di.Driver<SQLite20Driver>();
+                                         di.Driver<Sql2008ClientDriver>();
+                                         di.Dialect<MsSql2012Dialect>();
                                          di.ConnectionReleaseMode = ConnectionReleaseMode.OnClose;
                                          di.LogFormattedSql = true;
                                          di.LogSqlInConsole = true;

@@ -11,7 +11,7 @@ namespace Easy.NHibernate.Schema
         private readonly ISessionManager _sessionManager;
         protected SchemaExport _schemaExport;
 
-        public SchemaExporter(Configuration configuration, ISessionManager sessionManager)
+        public SchemaExporter(global::NHibernate.Cfg.Configuration configuration, ISessionManager sessionManager)
         {
             _sessionManager = sessionManager;
             _schemaExport = new SchemaExport(configuration);

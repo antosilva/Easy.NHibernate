@@ -20,7 +20,7 @@ namespace Easy.NHibernate.Repository
             _transaction = session.BeginTransaction(isolationLevel);
         }
 
-        public void Commit()
+        public void Complete()
         {
             if (_transaction?.IsActive ?? false)
             {
@@ -28,7 +28,7 @@ namespace Easy.NHibernate.Repository
             }
         }
 
-        public void Rollback()
+        protected void Rollback()
         {
             if (_transaction?.IsActive ?? false)
             {
@@ -54,8 +54,9 @@ namespace Easy.NHibernate.Repository
                 Rollback();
                 _transaction?.Dispose();
                 _transaction = null;
-                _disposed = true;
             }
+
+            _disposed = true;
         }
 
         ~UnitOfWork()

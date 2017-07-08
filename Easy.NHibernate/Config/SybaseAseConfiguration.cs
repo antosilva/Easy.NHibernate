@@ -3,7 +3,7 @@ using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Dialect;
 
-namespace Easy.NHibernate.Configurations
+namespace Easy.NHibernate.Config
 {
     public class SybaseAseConfiguration : Configuration
     {
