@@ -10,11 +10,11 @@ using NHibernate;
 
 namespace Easy.NHibernate.UnitTests.Queries
 {
-    internal class ListAllIds : IQuery<CustomerEntity, IEnumerable<int>>
+    internal class ListAllIds : IQuery<CustomerEntity, IEnumerable<long>>
     {
-        public IEnumerable<int> Run(IQueryOver<CustomerEntity, CustomerEntity> queryover)
+        public IEnumerable<long> Run(IQueryOver<CustomerEntity, CustomerEntity> queryover)
         {
-            return queryover.Select(x => x.Id).List<int>();
+            return queryover.Select(x => x.Id).List<long>();
         }
     }
 }

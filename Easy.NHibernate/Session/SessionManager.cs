@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Easy.NHibernate.Session.Interfaces;
 using NHibernate;
 using NHibernate.Cfg;
@@ -17,9 +18,9 @@ namespace Easy.NHibernate.Session
 
     public class SessionManager : ISessionManager
     {
-        private readonly SessionContextAffinity _sessionContextAffinity;
-        private Lazy<ISessionFactory> _sessionFactory;
-        protected bool _disposed;
+        protected readonly SessionContextAffinity _sessionContextAffinity;
+        protected Lazy<ISessionFactory> _sessionFactory;
+        protected int _disposed;
 
         public ISession CurrentSession => GetCurrentSession();
 
@@ -77,7 +78,7 @@ namespace Easy.NHibernate.Session
 
         private void Dispose(bool disposing)
         {
-            if (_disposed)
+            if (Interlocked.Exchange(ref _disposed, 1) == 1)
             {
                 return;
             }
@@ -92,8 +93,6 @@ namespace Easy.NHibernate.Session
                 }
                 _sessionFactory = null;
             }
-
-            _disposed = true;
         }
 
         public void Dispose()

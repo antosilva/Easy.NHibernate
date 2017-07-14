@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using Easy.NHibernate.DataStore.Interfaces;
 using Easy.NHibernate.Mapping.Interfaces;
 using Easy.NHibernate.Schema.Interfaces;
@@ -11,10 +12,10 @@ namespace Easy.NHibernate.DataStore
 {
     public class DataStore : IDataStore
     {
-        private IModelMappings _modelMappings;
-        private ISessionManager _sessionManager;
-        private ISchemaExporter _schemaExport;
-        protected bool _disposed;
+        protected IModelMappings _modelMappings;
+        protected ISessionManager _sessionManager;
+        protected ISchemaExporter _schemaExport;
+        protected int _disposed;
 
         public ISession CurrentSession => _sessionManager.CurrentSession;
 
@@ -93,7 +94,7 @@ namespace Easy.NHibernate.DataStore
 
         protected void Dispose(bool disposing)
         {
-            if (_disposed)
+            if (Interlocked.Exchange(ref _disposed, 1) == 1)
             {
                 return;
             }
@@ -105,8 +106,6 @@ namespace Easy.NHibernate.DataStore
                 _modelMappings = null;
                 _schemaExport = null;
             }
-
-            _disposed = true;
         }
 
         ~DataStore()

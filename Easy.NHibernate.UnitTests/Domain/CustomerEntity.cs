@@ -11,7 +11,7 @@ namespace Easy.NHibernate.UnitTests.Domain
         /// <summary>
         /// Only for unit tests.
         /// </summary>
-        public virtual void ChangeId(int id)
+        public virtual void ChangeId(long id)
         {
             Id = id;
         }

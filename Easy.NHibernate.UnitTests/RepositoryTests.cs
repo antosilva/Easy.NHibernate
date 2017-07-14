@@ -109,12 +109,12 @@ namespace Easy.NHibernate.UnitTests
     {
         protected CustomerEntity CustomerEntityById;
         protected IEnumerable<CustomerEntity> CustomerEntityByIdList;
-        protected int[] Ids;
+        protected long[] Ids;
 
         public override void Arrange()
         {
             base.Arrange();
-            Ids = new[] {2, 3};
+            Ids = new long[] {2, 3};
         }
 
         public override void Act()
@@ -138,8 +138,8 @@ namespace Easy.NHibernate.UnitTests
 
     internal class RepositoryTests_get_all_ids : RepositoryTests
     {
-        protected IEnumerable<int> GetAllIds;
-        protected IEnumerable<int> GetAllIdsByCriteria;
+        protected IEnumerable<long> GetAllIds;
+        protected IEnumerable<long> GetAllIdsByCriteria;
 
         public override void Act()
         {
@@ -202,7 +202,7 @@ namespace Easy.NHibernate.UnitTests
 
     internal class RepositoryTests_updating_customer : RepositoryTests
     {
-        protected int ModifiedCustomerId;
+        protected long ModifiedCustomerId;
         protected CustomerEntity ModifiedCustomer;
         protected CustomerEntity CustomerRetrieved;
 

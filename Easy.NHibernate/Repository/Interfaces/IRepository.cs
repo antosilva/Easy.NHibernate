@@ -16,12 +16,12 @@ namespace Easy.NHibernate.Repository.Interfaces
         IEnumerable<T> GetAll();
         IEnumerable<T> GetAll(Expression<Func<T, bool>> criteria);
 
-        T GetById(int id);
-        IEnumerable<T> GetByIdIn(IEnumerable<int> ids);
-        IEnumerable<T> GetByIdBetween(int startId, int endId);
+        T GetById(long id);
+        IEnumerable<T> GetByIdIn(IEnumerable<long> ids);
+        IEnumerable<T> GetByIdBetween(long startId, long endId);
 
-        IEnumerable<int> GetAllIds();
-        IEnumerable<int> GetAllIds(Expression<Func<T, bool>> criteria);
+        IEnumerable<long> GetAllIds();
+        IEnumerable<long> GetAllIds(Expression<Func<T, bool>> criteria);
 
         int Count();
         int Count(Expression<Func<T, bool>> criteria);

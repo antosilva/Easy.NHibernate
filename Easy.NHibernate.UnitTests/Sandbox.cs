@@ -96,7 +96,7 @@ namespace Easy.NHibernate.UnitTests
             // Query API instead of Repository pattern.
             IQueryRunner runner = new QueryRunner(session);
             ListAllIds query = new ListAllIds();
-            IEnumerable<int> result = runner.Run(query);
+            IEnumerable<long> result = runner.Run(query);
 
             result.Count().Should().Be(1);
         }

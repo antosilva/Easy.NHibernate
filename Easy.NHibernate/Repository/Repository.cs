@@ -11,7 +11,7 @@ namespace Easy.NHibernate.Repository
 {
     public class Repository<T> : IRepository<T> where T : class, IEntity
     {
-        private readonly ISession _session;
+        protected readonly ISession _session;
 
         public Repository(ISession session)
         {
@@ -44,12 +44,12 @@ namespace Easy.NHibernate.Repository
             }
         }
 
-        public T GetById(int id)
+        public T GetById(long id)
         {
             return _session.Get<T>(id);
         }
 
-        public IEnumerable<T> GetByIdIn(IEnumerable<int> ids)
+        public IEnumerable<T> GetByIdIn(IEnumerable<long> ids)
         {
             return QueryOver().Where(x => x.Id.IsIn(ids.ToArray()))
                               .OrderBy(x => x.Id).Asc
@@ -67,7 +67,7 @@ namespace Easy.NHibernate.Repository
                               .RowCount();
         }
 
-        public IEnumerable<T> GetByIdBetween(int startId, int endId)
+        public IEnumerable<T> GetByIdBetween(long startId, long endId)
         {
             return QueryOver().Where(x => x.Id.IsBetween(startId).And(endId))
                               .OrderBy(x => x.Id).Asc
@@ -87,19 +87,19 @@ namespace Easy.NHibernate.Repository
                               .List();
         }
 
-        public IEnumerable<int> GetAllIds()
+        public IEnumerable<long> GetAllIds()
         {
             return QueryOver().OrderBy(x => x.Id).Asc
                               .Select(x => x.Id)
-                              .List<int>();
+                              .List<long>();
         }
 
-        public IEnumerable<int> GetAllIds(Expression<Func<T, bool>> criteria)
+        public IEnumerable<long> GetAllIds(Expression<Func<T, bool>> criteria)
         {
             return QueryOver().Where(criteria)
                               .OrderBy(x => x.Id).Asc
                               .Select(x => x.Id)
-                              .List<int>();
+                              .List<long>();
         }
 
         public IQueryOver<T, T> QueryOver()

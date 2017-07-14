@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Threading;
 using Easy.NHibernate.Repository.Interfaces;
 using NHibernate;
 
@@ -7,8 +8,7 @@ namespace Easy.NHibernate.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private ITransaction _transaction;
-        protected bool _disposed;
+        protected ITransaction _transaction;
 
         public UnitOfWork(ISession session)
         {
@@ -38,30 +38,9 @@ namespace Easy.NHibernate.Repository
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                Rollback();
-                _transaction?.Dispose();
-                _transaction = null;
-            }
-
-            _disposed = true;
-        }
-
-        ~UnitOfWork()
-        {
-            Dispose(false);
+            Rollback();
+            _transaction?.Dispose();
+            _transaction = null;
         }
     }
 }
