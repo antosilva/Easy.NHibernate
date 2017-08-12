@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Easy.NHibernate.Config;
@@ -31,6 +32,7 @@ namespace Easy.NHibernate.UnitTests
         public void TestMethod1()
         {
             #region Comments
+
             ////Configuration sqlite = new SqliteConfiguration("Data Source=mydb.db;Version=3;");
             ////IModelMappings databaseSession = new ModelMappings(sqlite);
             ////databaseSession.AddMappings(new[] { Assembly.GetAssembly(typeof(CustomerMapping)) });
@@ -56,6 +58,7 @@ namespace Easy.NHibernate.UnitTests
             ////return;
 
             ////PopulateData td = new PopulateData();
+
             #endregion
 
             //Configuration cfg = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
@@ -78,7 +81,7 @@ namespace Easy.NHibernate.UnitTests
             IDataStore dataStore = new DataStore.DataStore(modelMappings, sessionManager, schemaExporter);
             dataStore.AddMappings(Assembly.GetAssembly(typeof(CustomerMapping)));
             dataStore.CompileMappings();
-            dataStore.ExportToDatabase();
+            //dataStore.ExportToDatabase();
 
             ISession session = dataStore.CurrentSession;
 
@@ -86,9 +89,10 @@ namespace Easy.NHibernate.UnitTests
             {
                 CustomersRepository repo = new CustomersRepository(session);
                 CustomerEntity newCustomer = new CustomerEntity
-                {
-                    Name = "TEST"
-                };
+                                             {
+                                                 Name = "SomeOne",
+                                                 PaymentDate = DateTimeOffset.Now
+                                             };
                 repo.Add(newCustomer);
                 uow.Complete();
             }

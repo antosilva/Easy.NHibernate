@@ -9,11 +9,11 @@ namespace Easy.NHibernate.Session
 {
     public enum SessionContextAffinity
     {
-        ThreadLocal,    // One session per call.
+        ThreadLocal,    // One session per transaction.
         ThreadStatic,   // One session per thread.
         Call,           // One session per CallContext in remoting.
         WcfOperation,   // One session per OperationContext in wcf.
-        Web             // One session per HttpContext, for web apps only.
+        Web             // One session per HttpContext in web apps.
     }
 
     public class SessionManager : ISessionManager

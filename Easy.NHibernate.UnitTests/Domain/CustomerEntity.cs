@@ -6,7 +6,7 @@ namespace Easy.NHibernate.UnitTests.Domain
     internal class CustomerEntity : EntityBase<CustomerEntity>
     {
         public virtual string Name { get; set; }
-        public virtual DateTime PaymentDate { get; set; }
+        public virtual DateTimeOffset PaymentDate { get; set; }
 
         /// <summary>
         /// Only for unit tests.
